@@ -1,7 +1,7 @@
 import logging
 import Responses as R
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-
+# name of the chatbot in Telegram is "dmnchatbot"
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
