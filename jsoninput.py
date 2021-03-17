@@ -13,9 +13,11 @@ def execute_dmn():
         d[str(Globals.myList[i])]["value"] = Globals.input[i]
 
     input = {"variables": d}
-
+    print(input)
     headers = {'Content-Type': 'application/json'}
 
     response = requests.request("POST", url, headers=headers, data=json.dumps(input))
 
-    return response.text[1:-1]
+    xr.readoutput()
+
+    return "The output is: " + str(response.json()[0][str(Globals.output[0])]["value"])

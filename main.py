@@ -1,6 +1,8 @@
 import logging
 import Responses as R
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+import jsoninput as JS
+import Globals
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -22,10 +24,19 @@ def help(update, context):
 
 
 def handle_message(update, context):
-    text = str(update.message.text).capitalize()
-    response = R.sample_responses(text)
-    update.message.reply_text(response)
-
+    try:
+        float(update.message.text)
+        text = float(update.message.text)
+        response = R.input_response(text)
+        update.message.reply_text(response)
+    except ValueError:
+        text = str(update.message.text)
+        if text in ("Ready", "ready"):
+            response = R.ready_responses()
+            update.message.reply_text(response)
+        else:
+            response = R.input_response(text)
+            update.message.reply_text(response)
 
 
 def error(update, context):

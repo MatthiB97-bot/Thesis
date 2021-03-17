@@ -1,16 +1,56 @@
 import xmltodict, json
 import Globals
 
+xmlname = "DogLicenseUpdated1.xml"
+
+
+def read_input_values(integer):
+    with open(xmlname, 'r') as myfile:
+        obj = xmltodict.parse(myfile.read())
+        jsonvar = json.loads(json.dumps(obj))
+
+    try:
+        return jsonvar["definitions"]["decision"]["decisionTable"]["input"][integer]["inputValues"]["text"]
+    except TypeError:
+        for i in jsonvar["definitions"]["decision"]["decisionTable"]:
+            return jsonvar["definitions"]["decision"]["decisionTable"][i]["input"][integer]["inputValues"]["text"]
+
 
 def read_xml():
-    with open("ApprovalStatus.xml", 'r') as myfile:
+    with open(xmlname, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
-        xvar = json.loads(json.dumps(obj))
+        jsonvar = json.loads(json.dumps(obj))
 
     Globals.myList.clear()
     k = -1
 
-    for xvar["inputData"] in xvar["definitions"]:
+    for jsonvar["inputData"] in jsonvar["definitions"]:
         k = k+1
-        if k < len(xvar["definitions"]["inputData"]):
-            Globals.myList.append(xvar["definitions"]["inputData"][k]["@name"])
+        if k < len(jsonvar["definitions"]["inputData"]):
+            Globals.myList.append(jsonvar["definitions"]["inputData"][k]["@name"])
+
+
+def read_decision_key():
+    Globals.decisionkey.clear()
+    with open(xmlname, 'r') as myfile:
+        obj = xmltodict.parse(myfile.read())
+        jsonvar = json.loads(json.dumps(obj))
+
+    try:
+        Globals.decisionkey.append(jsonvar["definitions"]["decision"]["@id"])
+    except TypeError:
+        Globals.decisionkey.append(jsonvar["definitions"]["decision"][0]["@id"])
+
+    return Globals.decisionkey[0]
+
+
+def readoutput():
+    Globals.output.clear()
+    with open(xmlname, 'r') as myfile:
+        obj = xmltodict.parse(myfile.read())
+        jsonvar = json.loads(json.dumps(obj))
+
+    try:
+        Globals.output.append(jsonvar["definitions"]["decision"]["decisionTable"]["output"]["@name"])
+    except TypeError:
+        Globals.output.append(jsonvar["definitions"]["decision"][0]["decisionTable"]["output"]["@name"])

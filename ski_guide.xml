@@ -99,8 +99,8 @@
       </rule>
     </decisionTable>
   </decision>
-  <inputData id="InputData_1e79q1v" name="ski-level" />
-  <inputData id="InputData_0grpsro" name="skiing style" />
+  <inputData id="InputData_1e79q1v" name="ski_level" />
+  <inputData id="InputData_0grpsro" name="ski_style" />
   <dmndi:DMNDI>
     <dmndi:DMNDiagram>
       <dmndi:DMNShape dmnElementRef="Decision_056yjdp">
