@@ -20,4 +20,4 @@ def execute_dmn():
 
     xr.readoutput()
 
-    return "The output is: " + str(response.json()[0][str(Globals.output[0])]["value"])
+    return "The output is: " + str(response.json()[0][str(Globals.output[0])]["value"]) + "\nIf you want to try again, send 'again'"

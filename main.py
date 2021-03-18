@@ -31,7 +31,7 @@ def handle_message(update, context):
         update.message.reply_text(response)
     except ValueError:
         text = str(update.message.text)
-        if text in ("Ready", "ready"):
+        if text in ("Ready", "ready", "again", "Again"):
             response = R.ready_responses()
             update.message.reply_text(response)
         else:

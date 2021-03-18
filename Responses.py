@@ -7,7 +7,6 @@ def ready_responses():
     Globals.input.clear()
     X.read_xml()
     try:
-        X.read_input_values(0)
         x = ". \nThese are the possible input values: " + str(X.read_input_values(0))
     except:
         x = ""
@@ -25,7 +24,6 @@ def input_response(input):
     if Globals.a < len(Globals.myList):
         Globals.a = Globals.a + 1
         try:
-            X.read_input_values(Globals.a)
             x = ". \nThese are the possible input values: " + str(X.read_input_values(Globals.a))
         except:
             x = ""

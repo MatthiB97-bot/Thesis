@@ -1,7 +1,7 @@
 import xmltodict, json
 import Globals
 
-xmlname = "DogLicenseUpdated1.xml"
+xmlname = "BMILevel1.xml"
 
 
 def read_input_values(integer):
@@ -12,8 +12,8 @@ def read_input_values(integer):
     try:
         return jsonvar["definitions"]["decision"]["decisionTable"]["input"][integer]["inputValues"]["text"]
     except TypeError:
-        for i in jsonvar["definitions"]["decision"]["decisionTable"]:
-            return jsonvar["definitions"]["decision"]["decisionTable"][i]["input"][integer]["inputValues"]["text"]
+        for jsonvar["decision"] in jsonvar["definitions"]:
+            return jsonvar["definitions"]["decision"]["decisionTable"]["input"][1]["inputValues"]["text"]
 
 
 def read_xml():
