@@ -1,8 +1,6 @@
 import logging
 import Responses as R
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-import jsoninput as JS
-import Globals
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -58,6 +56,7 @@ def main():
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(MessageHandler(Filters.text, handle_message))
+
     # log all errors
     dp.add_error_handler(error)
 

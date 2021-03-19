@@ -1,3 +1,5 @@
+from telegram import update, ReplyKeyboardMarkup
+
 import Globals
 import XMLread as X
 import jsoninput as JS
@@ -6,11 +8,11 @@ import jsoninput as JS
 def ready_responses():
     Globals.input.clear()
     X.read_xml()
+    
     try:
-        x = ". \nThese are the possible input values: " + str(X.read_input_values(0))
+        return "Please give a value for the following input: " + str(Globals.myList[0]) + ". \nThese are the possible input values: " + str(X.read_input_values(0))
     except:
-        x = ""
-    return "Please give a value for the following input: " + str(Globals.myList[0]) + x
+        return "Please give a value for the following input: " + str(Globals.myList[0])
 
 
 def input_response(input):

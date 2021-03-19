@@ -1,7 +1,7 @@
 import xmltodict, json
 import Globals
 
-xmlname = "BMILevel1.xml"
+xmlname = "threelayers3.xml"
 
 
 def read_input_values(integer):
@@ -25,12 +25,16 @@ def read_xml():
 
     Globals.myList.clear()
     Globals.oilist.clear()
+    list = []
+    list.clear()
+
     try:
+        for i in range(len(jsonvar["definitions"]["decision"])):
+            list.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["output"]["@name"])
         for a in range(len(jsonvar["definitions"]["decision"])):
             for b in range(len(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"])):
-                if jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] != \
-                        jsonvar["definitions"]["decision"][a-1]["decisionTable"]["output"]["@name"] and\
-                        jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] not in Globals.myList:
+                if jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] not in list \
+                        and jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] not in Globals.myList:
                     Globals.myList.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"])
                 else:
                     Globals.oilist.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"])
