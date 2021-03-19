@@ -1,7 +1,7 @@
 import xmltodict, json
 import Globals
 
-xmlname = "ski_guide.xml"
+xmlname = "BMILevel1.xml"
 
 
 def read_input_values(integer):
@@ -29,7 +29,8 @@ def read_xml():
         for a in range(len(jsonvar["definitions"]["decision"])):
             for b in range(len(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"])):
                 if jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] != \
-                        jsonvar["definitions"]["decision"][a-1]["decisionTable"]["output"]["@name"]:
+                        jsonvar["definitions"]["decision"][a-1]["decisionTable"]["output"]["@name"] and\
+                        jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] not in Globals.myList:
                     Globals.myList.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"])
                 else:
                     Globals.oilist.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"])
