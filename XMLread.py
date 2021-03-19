@@ -1,7 +1,7 @@
 import xmltodict, json
 import Globals
 
-xmlname = "BMILevel1.xml"
+xmlname = "ski_guide.xml"
 
 
 def read_input_values(integer):
@@ -10,10 +10,12 @@ def read_input_values(integer):
         jsonvar = json.loads(json.dumps(obj))
 
     try:
+        for a in range(len(jsonvar["definitions"]["decision"])):
+            for b in range(len(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"])):
+                if jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] == Globals.myList[integer]:
+                    return jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputValues"]["text"]
+    except:
         return jsonvar["definitions"]["decision"]["decisionTable"]["input"][integer]["inputValues"]["text"]
-    except TypeError:
-        for jsonvar["decision"] in jsonvar["definitions"]:
-            return jsonvar["definitions"]["decision"]["decisionTable"]["input"][1]["inputValues"]["text"]
 
 
 def read_xml():
@@ -22,12 +24,19 @@ def read_xml():
         jsonvar = json.loads(json.dumps(obj))
 
     Globals.myList.clear()
-    k = -1
-
-    for jsonvar["inputData"] in jsonvar["definitions"]:
-        k = k+1
-        if k < len(jsonvar["definitions"]["inputData"]):
-            Globals.myList.append(jsonvar["definitions"]["inputData"][k]["@name"])
+    Globals.oilist.clear()
+    try:
+        for a in range(len(jsonvar["definitions"]["decision"])):
+            for b in range(len(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"])):
+                if jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] != \
+                        jsonvar["definitions"]["decision"][a-1]["decisionTable"]["output"]["@name"]:
+                    Globals.myList.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"])
+                else:
+                    Globals.oilist.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"])
+    except:
+        for a in range(len(jsonvar["definitions"]["decision"]["decisionTable"]["input"])):
+            Globals.myList.append(jsonvar["definitions"]["decision"]["decisionTable"]["input"][a]["inputExpression"]["text"])
+    print(Globals.myList)
 
 
 def read_decision_key():
@@ -39,8 +48,9 @@ def read_decision_key():
     try:
         Globals.decisionkey.append(jsonvar["definitions"]["decision"]["@id"])
     except TypeError:
-        Globals.decisionkey.append(jsonvar["definitions"]["decision"][0]["@id"])
-
+        for a in range(len(jsonvar["definitions"]["decision"])):
+            if not jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"] in Globals.oilist:
+                Globals.decisionkey.append(jsonvar["definitions"]["decision"][a]["@id"])
     return Globals.decisionkey[0]
 
 
@@ -53,4 +63,7 @@ def readoutput():
     try:
         Globals.output.append(jsonvar["definitions"]["decision"]["decisionTable"]["output"]["@name"])
     except TypeError:
-        Globals.output.append(jsonvar["definitions"]["decision"][0]["decisionTable"]["output"]["@name"])
+        for a in range(len(jsonvar["definitions"]["decision"])):
+            if not jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"] in Globals.oilist:
+                Globals.output.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"])
+    print(Globals.output)
