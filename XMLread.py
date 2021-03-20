@@ -1,7 +1,7 @@
 import xmltodict, json
 import Globals
 
-xmlname = "DogLicenseUpdated1.xml"
+xmlname = "threelayers3.xml"
 
 
 def same_values():
@@ -13,6 +13,7 @@ def same_values():
     remlist = []
     rules = range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"]))
     entries = range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][0]["inputEntry"]))
+    decisions = range(len(jsonvar["definitions"]["decision"]))
     try:
         for k in entries:
             sameval.clear()
@@ -22,27 +23,35 @@ def same_values():
             for i in sameval:
                 if i == sameval[0]:
                     a = a + 1
-            if len(sameval) == a:
+            if len(sameval) == a and \
+                    jsonvar["definitions"]["decision"]["decisionTable"]["input"][k]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
                 Globals.d[str(Globals.myList[k])] = {}
-                Globals.d[str(Globals.myList[k])]["value"] = jsonvar["definitions"]["decision"]["decisionTable"]["rule"][0]["inputEntry"][k]["text"].strip('"')
+                Globals.d[str(Globals.myList[k])]["value"] = \
+                    jsonvar["definitions"]["decision"]["decisionTable"]["rule"][0]["inputEntry"][k]["text"].strip('"')
                 remlist.append(k)
         for n in sorted(remlist, reverse=True):
             Globals.myList.remove(Globals.myList[n])
         remlist.clear()
-        print(type(6))
     except:
-        for k in range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"])):
-            for m in range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][k]["inputEntry"])):
-                sameval.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][k]["inputEntry"][m]["text"])
-        for i in sameval:
-            if i == sameval[0]:
-                a = a + 1
-        if len(sameval) == a:
-            Globals.d[str(Globals.myList[0])] = {}
-            Globals.d[str(Globals.myList[0])]["value"] = jsonvar["definitions"]["decision"]["decisionTable"]["rule"][0]["inputEntry"][0]["text"].strip('"')
-            Globals.myList.remove(Globals.myList[0])
-            print(Globals.jsoninput)
-            print(Globals.myList)
+        for n in decisions:
+            for k in entries:
+                a = 0
+                sameval.clear()
+                for m in rules:
+                    sameval.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][m]["inputEntry"][k]["text"])
+                for i in sameval:
+                    if i == sameval[0]:
+                        a = a + 1
+                    if len(sameval) == a and \
+                            jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"][
+                                "@typeRef"] not in ["double", "integer"]:
+                        Globals.d[str(Globals.myList[k])] = {}
+                        Globals.d[str(Globals.myList[k])]["value"] = \
+                        jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][0]["inputEntry"][k]["text"].strip('"')
+                        remlist.append(k)
+                for n in sorted(remlist, reverse=True):
+                    Globals.myList.remove(Globals.myList[n])
+                remlist.clear()
 
 
 def read_input_values(integer):
