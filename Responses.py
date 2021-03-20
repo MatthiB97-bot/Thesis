@@ -8,7 +8,8 @@ import jsoninput as JS
 def ready_responses():
     Globals.input.clear()
     X.read_xml()
-    
+    X.same_values()
+
     try:
         return "Please give a value for the following input: " + str(Globals.myList[0]) + ". \nThese are the possible input values: " + str(X.read_input_values(0))
     except:
