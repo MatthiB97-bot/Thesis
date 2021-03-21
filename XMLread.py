@@ -1,7 +1,7 @@
 import xmltodict, json
 import Globals
 
-xmlname = "threelayers5.xml"
+xmlname = "DogLicenseUpdated1.xml"
 
 
 def same_values():
@@ -12,57 +12,96 @@ def same_values():
     sameval = []
     remlist = []
     decisions = range(len(jsonvar["definitions"]["decision"]))
-    try:
+    try: #one decision table
         rules = range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"]))
-        entries = range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][0]["inputEntry"]))
-        for k in entries:
-            sameval.clear()
-            a = 0
-            for m in rules:
-                sameval.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][m]["inputEntry"][k]["text"])
-            for i in sameval:
-                if i == sameval[0]:
-                    a = a + 1
-            if len(sameval) == a and \
-                    jsonvar["definitions"]["decision"]["decisionTable"]["input"][k]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
-                Globals.d[str(Globals.myList[k])] = {}
-                Globals.d[str(Globals.myList[k])]["value"] = \
-                    jsonvar["definitions"]["decision"]["decisionTable"]["rule"][0]["inputEntry"][k]["text"].strip('"')
-                remlist.append(k)
-        for n in sorted(remlist, reverse=True):
-            Globals.myList.remove(Globals.myList[n])
+        try:
+            entries = range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][0]["inputEntry"]))  # number of entries (multiple rules)
+        except:
+            entries = range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["inputEntry"]))  # number of entries (one rule)
+        try: #multiple rules
+            for k in entries:
+                sameval.clear()
+                a = 0
+                for m in rules:
+                    sameval.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][m]["inputEntry"][k]["text"])
+                if len(sameval) != 0:
+                    for i in sameval: #check if all values are the same
+                        if i == sameval[0]:
+                            a = a + 1
+                    if len(sameval) == a and \
+                            jsonvar["definitions"]["decision"]["decisionTable"]["input"][k]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
+                        Globals.d[str(Globals.myList[k])] = {}
+                        Globals.d[str(Globals.myList[k])]["value"] = \
+                            jsonvar["definitions"]["decision"]["decisionTable"]["rule"][0]["inputEntry"][k]["text"].strip('"')
+                        remlist.append(k)
+        except: #one rule
+            for k in entries:
+                sameval.clear()
+                a = 0
+                sameval.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["inputEntry"][k]["text"])
+                if len(sameval) != 0:
+                    print(sameval)
+                    for i in sameval:
+                        if i == sameval[0]:
+                            a = a + 1
+                    if len(sameval) == a and \
+                            jsonvar["definitions"]["decision"]["decisionTable"]["input"][k]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
+                        Globals.d[str(Globals.myList[k])] = {}
+                        Globals.d[str(Globals.myList[k])]["value"] = \
+                            jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["inputEntry"][k]["text"].strip('"')
+                        remlist.append(k)
+        if len(remlist) != 0:
+            for n in sorted(remlist, reverse=True):
+                Globals.myList.remove(Globals.myList[n])
         remlist.clear()
-    except:
+    except: #multiple decision tables
         w = -1
+        checklist = []
         for n in decisions:
             rules = range(len(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"]))
-            entries = range(len(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][0]["inputEntry"]))
+            try:
+                entries = range(len(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][0]["inputEntry"])) #number of entries (multiple rules)
+            except:
+                entries = range(len(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"]["inputEntry"])) #number of entries (one rule)
             for k in entries:
-                a = 0
-                if jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"] not in Globals.oilist:
-                    w = w + 1
-                sameval.clear()
-                for m in rules:
-                    sameval.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][m]["inputEntry"][k]["text"])
-                for i in sameval:
-                    if i == sameval[0]:
-                        a = a + 1
-                    if len(sameval) == a and \
-                            jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
-                        Globals.d[str(Globals.myList[w])] = {}
-                        Globals.d[str(Globals.myList[w])]["value"] = \
-                        jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][0]["inputEntry"][k]["text"].strip('"')
-                        remlist.append(w)
-                        print(remlist)
-        for b in sorted(remlist, reverse=True):
-            Globals.myList.remove(Globals.myList[b])
+                if jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"] not in checklist:
+                    checklist.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"]) #ensure uniqueness
+                    a = 0
+                    if jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"] not in Globals.oilist:
+                        w = w + 1
+                    sameval.clear()
+                    try: #multiple rules in decision table
+                        for m in rules:
+                            sameval.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][m]["inputEntry"][k]["text"])
+                        if len(sameval) != 0:
+                            for i in sameval:
+                                if i == sameval[0]:
+                                    a = a + 1
+                                if len(sameval) == a and \
+                                        jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
+                                    Globals.d[str(Globals.myList[w])] = {}
+                                    Globals.d[str(Globals.myList[w])]["value"] = \
+                                    jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][0]["inputEntry"][k]["text"].strip('"')
+                                    remlist.append(w)
+                                    print(remlist)
+                    except: #only one rule in decision table
+                        sameval.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"]["inputEntry"][k]["text"])
+                        if len(sameval) != 0:
+                            for i in sameval:
+                                if i == sameval[0]:
+                                    a = a + 1
+                                if len(sameval) == a and \
+                                        jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
+                                    Globals.d[str(Globals.myList[w])] = {}
+                                    Globals.d[str(Globals.myList[w])]["value"] = \
+                                    jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"]["inputEntry"][k]["text"].strip('"')
+                                    remlist.append(w)
+                                    print(remlist)
+        if len(remlist) !=0:
+            for b in sorted(remlist, reverse=True):
+                Globals.myList.remove(Globals.myList[b])
         remlist.clear()
-
-        for w in range(len(jsonvar["definitions"]["decision"])):
-            for p in range(len(jsonvar["definitions"]["decision"][w]["decisionTable"]["input"])):
-                if any(Globals.myList.count(jsonvar["definitions"]["decision"][w]["decisionTable"]["input"][p]["inputExpression"]["text"]) > 1 \
-                        for Globals.myList.count(jsonvar["definitions"]["decision"][w]["decisionTable"]["input"][p]["inputExpression"]["text"] in Globals.myList):
-                    Globals.myList.remove(Globals.myList.count(jsonvar["definitions"]["decision"][w]["decisionTable"]["input"][p]["inputExpression"]["text"])
+        checklist.clear()
 
 
 def read_input_values(integer):
@@ -94,8 +133,11 @@ def read_xml():
             list.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["output"]["@name"])
         for a in range(len(jsonvar["definitions"]["decision"])):
             for b in range(len(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"])):
-                if jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] not in list
+                if jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] not in list and\
+                        jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] not in Globals.myList:
                     Globals.myList.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"])
+                elif jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] in Globals.myList:
+                    pass
                 else:
                     Globals.oilist.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"])
     except:
