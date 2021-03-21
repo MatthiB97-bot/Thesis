@@ -1,7 +1,7 @@
 import xmltodict, json
 import Globals
 
-xmlname = "threelayers3.xml"
+xmlname = "threelayers5.xml"
 
 
 def same_values():
@@ -11,10 +11,10 @@ def same_values():
 
     sameval = []
     remlist = []
-    rules = range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"]))
-    entries = range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][0]["inputEntry"]))
     decisions = range(len(jsonvar["definitions"]["decision"]))
     try:
+        rules = range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"]))
+        entries = range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][0]["inputEntry"]))
         for k in entries:
             sameval.clear()
             a = 0
@@ -33,9 +33,18 @@ def same_values():
             Globals.myList.remove(Globals.myList[n])
         remlist.clear()
     except:
+        w = -1
+        lst = []
         for n in decisions:
+            rules = range(len(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"]))
+            entries = range(len(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][0]["inputEntry"]))
             for k in entries:
                 a = 0
+                if jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"] not in Globals.oilist:
+                    if jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"] not in lst:
+                        w = w + 1
+                        lst.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"])
+                        print(lst)
                 sameval.clear()
                 for m in rules:
                     sameval.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][m]["inputEntry"][k]["text"])
@@ -43,15 +52,16 @@ def same_values():
                     if i == sameval[0]:
                         a = a + 1
                     if len(sameval) == a and \
-                            jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"][
-                                "@typeRef"] not in ["double", "integer"]:
-                        Globals.d[str(Globals.myList[k])] = {}
-                        Globals.d[str(Globals.myList[k])]["value"] = \
+                            jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
+                        Globals.d[str(Globals.myList[w])] = {}
+                        Globals.d[str(Globals.myList[w])]["value"] = \
                         jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][0]["inputEntry"][k]["text"].strip('"')
-                        remlist.append(k)
-                for n in sorted(remlist, reverse=True):
-                    Globals.myList.remove(Globals.myList[n])
-                remlist.clear()
+                        remlist.append(w)
+                        print(remlist)
+        for b in sorted(remlist, reverse=True):
+            Globals.myList.remove(Globals.myList[b])
+        remlist.clear()
+        lst.clear()
 
 
 def read_input_values(integer):
@@ -86,6 +96,8 @@ def read_xml():
                 if jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] not in list \
                         and jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] not in Globals.myList:
                     Globals.myList.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"])
+                elif jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] in Globals.myList:
+                    pass
                 else:
                     Globals.oilist.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"])
     except:

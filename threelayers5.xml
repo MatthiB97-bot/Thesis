@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="Definitions_0oqwlkx" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
+  <decision id="Decision_0ngcoh1" name="favcol">
+    <informationRequirement id="InformationRequirement_17lq0zw">
+      <requiredInput href="#InputData_0ymuuct" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_11vd7ct">
+      <requiredInput href="#InputData_0dcftg4" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1cfwon9">
+      <input id="Input_1" label="Gender">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>gender</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0cvvbuo">
+          <text>"Male","Female"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_17k5jod" label="Age">
+        <inputExpression id="LiteralExpression_193qyjk" typeRef="integer">
+          <text>age</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Color" name="color" typeRef="string">
+        <outputValues id="UnaryTests_14vu12w">
+          <text></text>
+        </outputValues>
+      </output>
+      <rule id="DecisionRule_0m0eg8b">
+        <inputEntry id="UnaryTests_00l2f7r">
+          <text>"Male"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1lqm4rg">
+          <text>&lt;18</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_10r1wmu">
+          <text>"Blue"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_18rgvqp">
+        <inputEntry id="UnaryTests_07vpqsk">
+          <text>"Male"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b6ony3">
+          <text>&gt;=18</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1iv0wrf">
+          <text>"Yellow"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1alagdq">
+        <inputEntry id="UnaryTests_0pcprd9">
+          <text>"Male"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1qzblfv">
+          <text>&lt;18</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_105yylr">
+          <text>"Red"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ny06ff">
+        <inputEntry id="UnaryTests_16pav1j">
+          <text>"Male"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1xtuawu">
+          <text>&gt;=18</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1hd3hjo">
+          <text>"Green"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_0ymuuct" name="gender" />
+  <inputData id="InputData_0dcftg4" name="age" />
+  <inputData id="InputData_055rriv" name="sexuality" />
+  <decision id="Decision_0hwz0r5" name="favanimal">
+    <informationRequirement id="InformationRequirement_1bsp7cm">
+      <requiredInput href="#InputData_055rriv" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1jfkpo0">
+      <requiredDecision href="#Decision_0ngcoh1" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_15xerej">
+      <requiredDecision href="#Decision_08ljhv0" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_17g12ex">
+      <input id="InputClause_0cf2l3c" label="Sexuality">
+        <inputExpression id="LiteralExpression_1up5oda" typeRef="string">
+          <text>sexuality</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_1ph4ni3">
+          <text>"Gay","Straight"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_0vtfsex" label="Favcolor">
+        <inputExpression id="LiteralExpression_1kt7edv" typeRef="string">
+          <text>color</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0ikwwij" label="Haircolor">
+        <inputExpression id="LiteralExpression_1sbo5kb" typeRef="string">
+          <text>haircolor</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_06j0617" label="Favanimal" name="animal" typeRef="string" />
+      <rule id="DecisionRule_08dkygx">
+        <inputEntry id="UnaryTests_0tqm3pt">
+          <text>"Gay"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1x7pzsf">
+          <text>"Blue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1o573pv">
+          <text>"Black"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ln7qsw">
+          <text>"Pony"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0zv40ui">
+        <inputEntry id="UnaryTests_0x8vm7k">
+          <text>"Gay"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0h96ej9">
+          <text>"Yellow"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dtzv0c">
+          <text>"Black"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ej0d3k">
+          <text>"Unicorn"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_01bwexq">
+        <inputEntry id="UnaryTests_1m55yz3">
+          <text>"Straight"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1oe7r4p">
+          <text>"Blue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0frbkfq">
+          <text>"Brunette"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1xrx9o9">
+          <text>"COCK"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0ikaie4">
+        <inputEntry id="UnaryTests_1mb2fu2">
+          <text>"Straight"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1e5guwv">
+          <text>"Yellow"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0aewln8">
+          <text>"Brunette"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15mfvf9">
+          <text>"Dixie Normus"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_1arws28" name="drink" />
+  <decision id="Decision_10w1yyz" name="smoker">
+    <informationRequirement id="InformationRequirement_0adqc3s">
+      <requiredInput href="#InputData_1arws28" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_19mm9z0">
+      <requiredDecision href="#Decision_0hwz0r5" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_19r6g0o">
+      <requiredInput href="#InputData_0youumt" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1959wer">
+      <input id="InputClause_0mp0mdb" label="Favanimal">
+        <inputExpression id="LiteralExpression_1mtw6sq" typeRef="string">
+          <text>animal</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0xgui0k" label="Favdrink">
+        <inputExpression id="LiteralExpression_160cw19" typeRef="string">
+          <text>drink</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_168vz9s">
+          <text>"Rose"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_1fctioq" label="Favfood">
+        <inputExpression id="LiteralExpression_0djsotl" typeRef="string">
+          <text>food</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0lst0rh">
+          <text>"Kak"</text>
+        </inputValues>
+      </input>
+      <output id="OutputClause_0qto6dc" label="smoker" name="smoker" typeRef="string" />
+      <rule id="DecisionRule_1cw3mro">
+        <inputEntry id="UnaryTests_1nx1nnf">
+          <text>"Pony"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0rfqu8q">
+          <text>"Rose"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0eajei9">
+          <text>"Kak"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_17o3b1o">
+          <text>"YOU SHOULD SMOKE"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0eb9lk6">
+        <inputEntry id="UnaryTests_16n0t3z">
+          <text>"Unicorn"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19vwaa2">
+          <text>"Rose"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0y1mqzw">
+          <text>"Kak"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1nsyo8p">
+          <text>"YOU SHOULD SMOKE"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1igbilj">
+        <inputEntry id="UnaryTests_1bx21cw">
+          <text>"COCK"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_11zdgn0">
+          <text>"Rose"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06w3cyz">
+          <text>"Kak"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ljz7d2">
+          <text>"YOU SHOULD SMOKE"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1xipxa3">
+        <inputEntry id="UnaryTests_1ws8zr4">
+          <text>"Dixie Normus"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ygftn3">
+          <text>"Rose"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1hpa0vv">
+          <text>"Kak"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ly7uuf">
+          <text>"YOU SHOULD SMOKE"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_08ljhv0" name="haircolor">
+    <informationRequirement id="InformationRequirement_1mmzd2v">
+      <requiredInput href="#InputData_08jg2x0" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_159hfc1">
+      <requiredInput href="#InputData_0ymuuct" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_07miqp7">
+      <input id="InputClause_19huq7z" label="skin_color">
+        <inputExpression id="LiteralExpression_0islzcr" typeRef="string">
+          <text>skincolor</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0yjq2g2">
+          <text>"black","asian","hispanic","normal"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_1l6cxcw" label="Gender">
+        <inputExpression id="LiteralExpression_165ppx2" typeRef="string">
+          <text>gender</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_1rrn8wq">
+          <text>"Male","Female"</text>
+        </inputValues>
+      </input>
+      <output id="OutputClause_0vgg962" label="hair_color" name="haircolor" typeRef="string" />
+      <rule id="DecisionRule_15vhpom">
+        <inputEntry id="UnaryTests_0z8vyle">
+          <text>"black"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_13fapr1">
+          <text>"Male"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0408e2x">
+          <text>"Black"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1uailox">
+        <inputEntry id="UnaryTests_0b2qpnr">
+          <text>"asian"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06dn461">
+          <text>"Male"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ibrsey">
+          <text>"Black"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_11wrrgi">
+        <inputEntry id="UnaryTests_0sg09il">
+          <text>"hispanic"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19xtwy2">
+          <text>"Male"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1oj0auj">
+          <text>"Brunette"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_12397n9">
+        <inputEntry id="UnaryTests_1gurdrb">
+          <text>"normal"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1bl1n4z">
+          <text>"Male"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0w7106t">
+          <text>"Blonde"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_08jg2x0" name="skincolor" />
+  <inputData id="InputData_0youumt" name="food" />
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_0ngcoh1">
+        <dc:Bounds height="80" width="180" x="730" y="360" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1ek7dij" dmnElementRef="InputData_0ymuuct">
+        <dc:Bounds height="45" width="125" x="477" y="607" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0rnafn6" dmnElementRef="InputData_0dcftg4">
+        <dc:Bounds height="45" width="125" x="787" y="607" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1tlwaw0" dmnElementRef="InformationRequirement_17lq0zw">
+        <di:waypoint x="540" y="607" />
+        <di:waypoint x="790" y="460" />
+        <di:waypoint x="790" y="440" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1du64y0" dmnElementRef="InformationRequirement_11vd7ct">
+        <di:waypoint x="850" y="607" />
+        <di:waypoint x="850" y="460" />
+        <di:waypoint x="850" y="440" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0j3ya68" dmnElementRef="InputData_055rriv">
+        <dc:Bounds height="45" width="125" x="477" y="387" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_191crie" dmnElementRef="Decision_0hwz0r5">
+        <dc:Bounds height="80" width="180" x="450" y="220" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_14mn0wf" dmnElementRef="InformationRequirement_1bsp7cm">
+        <di:waypoint x="540" y="387" />
+        <di:waypoint x="540" y="320" />
+        <di:waypoint x="540" y="300" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0dzc63t" dmnElementRef="InformationRequirement_1jfkpo0">
+        <di:waypoint x="820" y="360" />
+        <di:waypoint x="585" y="320" />
+        <di:waypoint x="585" y="300" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_11yy9rw" dmnElementRef="InputData_1arws28">
+        <dc:Bounds height="45" width="125" x="158" y="228" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0yq4vyv" dmnElementRef="Decision_10w1yyz">
+        <dc:Bounds height="80" width="180" x="450" y="70" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1y8w6op" dmnElementRef="InformationRequirement_0adqc3s">
+        <di:waypoint x="221" y="228" />
+        <di:waypoint x="495" y="170" />
+        <di:waypoint x="495" y="150" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_127vsjn" dmnElementRef="InformationRequirement_19mm9z0">
+        <di:waypoint x="540" y="220" />
+        <di:waypoint x="540" y="170" />
+        <di:waypoint x="540" y="150" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_15374hs" dmnElementRef="InformationRequirement_15xerej">
+        <di:waypoint x="240" y="360" />
+        <di:waypoint x="495" y="320" />
+        <di:waypoint x="495" y="300" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_1ik2vsg" dmnElementRef="Decision_08ljhv0">
+        <dc:Bounds height="80" width="180" x="150" y="360" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_00o99sl" dmnElementRef="InputData_08jg2x0">
+        <dc:Bounds height="45" width="125" x="147" y="587" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_19jy6rf" dmnElementRef="InformationRequirement_1mmzd2v">
+        <di:waypoint x="210" y="587" />
+        <di:waypoint x="210" y="460" />
+        <di:waypoint x="210" y="440" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0fes0fx" dmnElementRef="InformationRequirement_159hfc1">
+        <di:waypoint x="540" y="607" />
+        <di:waypoint x="270" y="460" />
+        <di:waypoint x="270" y="440" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0t9mozq" dmnElementRef="InputData_0youumt">
+        <dc:Bounds height="45" width="125" x="808" y="229" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1wn15ap" dmnElementRef="InformationRequirement_19r6g0o">
+        <di:waypoint x="871" y="229" />
+        <di:waypoint x="585" y="170" />
+        <di:waypoint x="585" y="150" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
