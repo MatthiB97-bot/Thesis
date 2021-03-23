@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="Definitions_1wta1nr" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
+  <decision id="Decision_065sg2h" name="Insurance">
+    <informationRequirement id="InformationRequirement_1gf6jem">
+      <requiredDecision href="#Decision_17fsgc0" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1v53ouu">
+      <requiredDecision href="#Decision_17mqt5v" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1w8717l">
+      <input id="Input_1" label="Qualified Person">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>qualify</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1xqd9bh" label="Valid Claim">
+        <inputExpression id="LiteralExpression_0876qpg" typeRef="string">
+          <text>claim</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="InsuranceClaim" name="insuranceClaim" typeRef="string" />
+      <rule id="DecisionRule_1uo7hnn">
+        <inputEntry id="UnaryTests_0lnrz7r">
+          <text>"Yes"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1yh0ne3">
+          <text>"Yes"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1vd5o7v">
+          <text>"Granted"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10wwl9k">
+        <inputEntry id="UnaryTests_1frz2p4">
+          <text>"Yes"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rjhyfc">
+          <text>"Yes"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ehi6op">
+          <text>"Granted"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0id1io0">
+        <inputEntry id="UnaryTests_1n438gb">
+          <text>"No"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1j711z3">
+          <text>"No"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1pe2083">
+          <text>"Rejected"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1pjc8dt">
+        <inputEntry id="UnaryTests_1bcui3f">
+          <text>"No"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_19tu5zw">
+          <text>"No"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0s6sqnj">
+          <text>"Rejected"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_17fsgc0" name="Client">
+    <informationRequirement id="InformationRequirement_0q6n9as">
+      <requiredInput href="#InputData_007nhuc" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0aey9ay">
+      <requiredInput href="#InputData_0iybpgh" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0imkv05">
+      <requiredInput href="#InputData_0pxgjzw" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1hkynn7">
+      <input id="InputClause_15r4548" label="Age">
+        <inputExpression id="LiteralExpression_14kbldx" typeRef="integer">
+          <text>Age</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1cyudiv" label="Gender">
+        <inputExpression id="LiteralExpression_102nrue" typeRef="string">
+          <text>gender</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0e7z6qz" label="Income Class">
+        <inputExpression id="LiteralExpression_0i1jbtr" typeRef="double">
+          <text>incomeClass</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_1r755e8" label="Qualify" name="qualify" typeRef="string" />
+      <rule id="DecisionRule_19etqd0">
+        <inputEntry id="UnaryTests_1a3wv9g">
+          <text>&gt;= 18</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0qg558q">
+          <text>"Male"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_12f49dt">
+          <text>[0..12500[</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1o3wzmd">
+          <text>"No"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_06h0zff">
+        <inputEntry id="UnaryTests_111ok3d">
+          <text>&gt;= 18</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0vz46mq">
+          <text>"Male"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0j7oh16">
+          <text>[12500..37500.79[</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0tud7ue">
+          <text>"Yes"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0tyofr1">
+        <inputEntry id="UnaryTests_0kgvzdk">
+          <text>&gt;= 18</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_161p4dl">
+          <text>"Male"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0z9724v">
+          <text>[37500.79..999999999999]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_124byme">
+          <text>"Yes"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1h25q9n">
+        <inputEntry id="UnaryTests_12v8yk6">
+          <text>&gt;= 18</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1q4dhzu">
+          <text>"Female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18tl2jg">
+          <text>[0..12500[</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0mexrbx">
+          <text>"No"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0qykwao">
+        <inputEntry id="UnaryTests_12ipgft">
+          <text>&gt;= 18</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1a19t25">
+          <text>"Female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ggsss1">
+          <text>[12500..37500.79[</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_09igdcv">
+          <text>"Yes"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0xq23pd">
+        <inputEntry id="UnaryTests_0hbiiuz">
+          <text>&gt;= 18</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1oty2gu">
+          <text>"Female"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_02zzhtn">
+          <text>[37500.79..999999999999]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1y158y3">
+          <text>"Yes"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="Decision_17mqt5v" name="Claim">
+    <informationRequirement id="InformationRequirement_01pocb5">
+      <requiredInput href="#InputData_1xeyn0p" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0h75s8h">
+      <requiredInput href="#InputData_1y575tr" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0f956y2">
+      <requiredDecision href="#Decision_1b93s7u" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_0rlg65f">
+      <input id="InputClause_1aypc41" label="Damage">
+        <inputExpression id="LiteralExpression_0gov7vg" typeRef="string">
+          <text>Damage</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0ners6i">
+          <text>"Light","Severe","Wreck"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_0mqm63v" label="Fault">
+        <inputExpression id="LiteralExpression_0eb9t4r" typeRef="string">
+          <text>fault</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0rggl4w">
+          <text>"Client","Third party"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_1u5hg5v" label="Vehicle">
+        <inputExpression id="LiteralExpression_0ko8tms" typeRef="string">
+          <text>Vehicle</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_1p8bgqn" label="Claim" name="claim" typeRef="string" />
+      <rule id="DecisionRule_0jv80m1">
+        <inputEntry id="UnaryTests_0vxbtx5">
+          <text>"Light"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1s3p3np">
+          <text>"Client"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_07732q5">
+          <text>"Slow"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1prnmz3">
+          <text>"Yes"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1yavird">
+        <inputEntry id="UnaryTests_1kw58bp">
+          <text>"Severe"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04iamo1">
+          <text>"Client"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1elkyea">
+          <text>"Slow","Intermediate"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_03bkmzd">
+          <text>"Yes"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0qd53on">
+        <inputEntry id="UnaryTests_0fnjam8">
+          <text>"Wreck"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1b233dk">
+          <text>"Client"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04b3djn">
+          <text>"Slow"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1ly15ye">
+          <text>"Yes"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1ftm8b7">
+        <inputEntry id="UnaryTests_1lctrew">
+          <text>"Light"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1etiiea">
+          <text>"Third party"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0riv8go">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1wh0a6e">
+          <text>"Yes"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1g2rway">
+        <inputEntry id="UnaryTests_1q1w99c">
+          <text>"Severe"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0wqzcx2">
+          <text>"Third party"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_003hp9b">
+          <text>"Slow"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_11yk4wd">
+          <text>"No"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_12hrhna">
+        <inputEntry id="UnaryTests_1i2h1jg">
+          <text>"Wreck"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0gqp0gi">
+          <text>"Third party"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_00baa08">
+          <text>"Fast"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_169ngey">
+          <text>"No"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_007nhuc" name="Age" />
+  <inputData id="InputData_0iybpgh" name="Gender" />
+  <inputData id="InputData_0pxgjzw" name="Income Class" />
+  <inputData id="InputData_1xeyn0p" name="Severity of damage" />
+  <inputData id="InputData_1y575tr" name="Whos fault" />
+  <decision id="Decision_1b93s7u" name="Car specifications">
+    <informationRequirement id="InformationRequirement_0goxe94">
+      <requiredInput href="#InputData_0bn7cze" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_05ce83p">
+      <requiredInput href="#InputData_0ms8ymb" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1e2w37n">
+      <input id="InputClause_1b38pfi" label="HorsePower">
+        <inputExpression id="LiteralExpression_1q6ucsy" typeRef="integer">
+          <text>HP</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1cib3zd" label="Used">
+        <inputExpression id="LiteralExpression_1msii21" typeRef="boolean">
+          <text>used</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_0p3vnxm" label="TypeOfCar" name="Vehicle" typeRef="string">
+        <outputValues id="UnaryTests_0ejqnrr">
+          <text>"Slow","Intermediate","Fast"</text>
+        </outputValues>
+      </output>
+      <rule id="DecisionRule_1jgzo2q">
+        <inputEntry id="UnaryTests_0fde8tm">
+          <text>[0..70]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_181o3nd">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1k26t4t">
+          <text>"Slow"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0llrzdk">
+        <inputEntry id="UnaryTests_03207lc">
+          <text>[70..120[</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1gjnvhu">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1pph5ms">
+          <text>"Slow"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1xf75dv">
+        <inputEntry id="UnaryTests_05h3lem">
+          <text>[120..200]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0w0q3yi">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_15i0sgw">
+          <text>"Intermediate"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0gjjcot">
+        <inputEntry id="UnaryTests_0sv3g9a">
+          <text>&gt;200</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1i5p23q">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0wv7so9">
+          <text>"Fast"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1em0wij">
+        <inputEntry id="UnaryTests_0avdef7">
+          <text>[0..70]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1cnk97a">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_08ww8lc">
+          <text>"Slow"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1pkx07e">
+        <inputEntry id="UnaryTests_1jnqshj">
+          <text>]70..120]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ozyx7w">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1oko6j5">
+          <text>"Slow"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1c9ek4m">
+        <inputEntry id="UnaryTests_1uq2u5i">
+          <text>]120..200]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ya30o2">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0sfqcrw">
+          <text>"Slow"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1inli3r">
+        <inputEntry id="UnaryTests_0zwna0y">
+          <text>&gt;200</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_16qc80e">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1g2dnpr">
+          <text>"Slow"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_0bn7cze" name="HorsePower" />
+  <inputData id="InputData_0ms8ymb" name="Used" />
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_065sg2h">
+        <dc:Bounds height="80" width="180" x="540" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_03x9dl1" dmnElementRef="Decision_17fsgc0">
+        <dc:Bounds height="80" width="180" x="260" y="260" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0nn00ad" dmnElementRef="InformationRequirement_1gf6jem">
+        <di:waypoint x="350" y="260" />
+        <di:waypoint x="600" y="180" />
+        <di:waypoint x="600" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0gt85kr" dmnElementRef="InformationRequirement_1v53ouu">
+        <di:waypoint x="800" y="260" />
+        <di:waypoint x="660" y="180" />
+        <di:waypoint x="660" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_13b8ku0" dmnElementRef="Decision_17mqt5v">
+        <dc:Bounds height="80" width="180" x="710" y="260" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_08x8cpt" dmnElementRef="InputData_007nhuc">
+        <dc:Bounds height="45" width="125" x="157" y="388" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1ah5wy3" dmnElementRef="InputData_0iybpgh">
+        <dc:Bounds height="45" width="125" x="297" y="389" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1xdykp4" dmnElementRef="InputData_0pxgjzw">
+        <dc:Bounds height="45" width="125" x="437" y="389" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1ikjyw5" dmnElementRef="InformationRequirement_0q6n9as">
+        <di:waypoint x="220" y="388" />
+        <di:waypoint x="305" y="360" />
+        <di:waypoint x="305" y="340" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1t7qs1a" dmnElementRef="InformationRequirement_0aey9ay">
+        <di:waypoint x="360" y="389" />
+        <di:waypoint x="350" y="360" />
+        <di:waypoint x="350" y="340" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0vyd5xz" dmnElementRef="InformationRequirement_0imkv05">
+        <di:waypoint x="500" y="389" />
+        <di:waypoint x="395" y="360" />
+        <di:waypoint x="395" y="340" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_14o4zi0" dmnElementRef="InputData_1xeyn0p">
+        <dc:Bounds height="45" width="125" x="648" y="389" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0zfp79f" dmnElementRef="InputData_1y575tr">
+        <dc:Bounds height="45" width="125" x="818" y="389" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_07m7ybl" dmnElementRef="InformationRequirement_01pocb5">
+        <di:waypoint x="711" y="389" />
+        <di:waypoint x="755" y="360" />
+        <di:waypoint x="755" y="340" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0oo3rue" dmnElementRef="InformationRequirement_0h75s8h">
+        <di:waypoint x="881" y="389" />
+        <di:waypoint x="845" y="360" />
+        <di:waypoint x="845" y="340" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0o8j05t" dmnElementRef="InformationRequirement_0f956y2">
+        <di:waypoint x="800" y="540" />
+        <di:waypoint x="800" y="360" />
+        <di:waypoint x="800" y="340" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0d7lkg5" dmnElementRef="Decision_1b93s7u">
+        <dc:Bounds height="80" width="180" x="710" y="540" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0n8pudg" dmnElementRef="InputData_0bn7cze">
+        <dc:Bounds height="45" width="125" x="618" y="738" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0k9gm7l" dmnElementRef="InputData_0ms8ymb">
+        <dc:Bounds height="45" width="125" x="878" y="739" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1sgsv4k" dmnElementRef="InformationRequirement_0goxe94">
+        <di:waypoint x="681" y="738" />
+        <di:waypoint x="770" y="640" />
+        <di:waypoint x="770" y="620" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_12mk52n" dmnElementRef="InformationRequirement_05ce83p">
+        <di:waypoint x="941" y="739" />
+        <di:waypoint x="830" y="640" />
+        <di:waypoint x="830" y="620" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
