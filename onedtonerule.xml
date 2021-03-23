@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="Definitions_1ohrrkh" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="4.6.0">
+  <decision id="Decision_09ffgmb" name="onerule">
+    <informationRequirement id="InformationRequirement_1f25tq7">
+      <requiredInput href="#InputData_0k2c4cl" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1wfnl3g">
+      <requiredInput href="#InputData_0k4ev0n" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_0anpyvo">
+      <requiredInput href="#InputData_1lndlij" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_150qj4h">
+      <input id="Input_1" label="Age">
+        <inputExpression id="InputExpression_1" typeRef="integer">
+          <text>age</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1l22cza" label="Color" biodi:width="192">
+        <inputExpression id="LiteralExpression_1maxq40" typeRef="string">
+          <text>color</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_00x0fl1">
+          <text>"blue"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_1v55ihr" label="TestBool">
+        <inputExpression id="LiteralExpression_1hjy5sj" typeRef="boolean">
+          <text>TestBool</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="OneRule" name="Onerule" typeRef="string">
+        <outputValues id="UnaryTests_0gtw3l3">
+          <text></text>
+        </outputValues>
+      </output>
+      <rule id="DecisionRule_1nkk0u0">
+        <inputEntry id="UnaryTests_1d2125s">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1r0e5l7">
+          <text>"blue"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0szj4ju">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0xijr5i">
+          <text>"it works"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_0k2c4cl" name="age" />
+  <inputData id="InputData_0k4ev0n" name="TestBool" />
+  <inputData id="InputData_1lndlij" name="color" />
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="Decision_09ffgmb">
+        <dc:Bounds height="80" width="180" x="250" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0nd74wi" dmnElementRef="InputData_0k2c4cl">
+        <dc:Bounds height="45" width="125" x="158" y="228" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1fghefz" dmnElementRef="InputData_0k4ev0n">
+        <dc:Bounds height="45" width="125" x="408" y="229" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_09pvq8h" dmnElementRef="InformationRequirement_1f25tq7">
+        <di:waypoint x="221" y="228" />
+        <di:waypoint x="295" y="180" />
+        <di:waypoint x="295" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_17le0xl" dmnElementRef="InformationRequirement_1wfnl3g">
+        <di:waypoint x="471" y="229" />
+        <di:waypoint x="385" y="180" />
+        <di:waypoint x="385" y="160" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_1r4rkpz" dmnElementRef="InputData_1lndlij">
+        <dc:Bounds height="45" width="125" x="278" y="308" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_054hqfi" dmnElementRef="InformationRequirement_0anpyvo">
+        <di:waypoint x="341" y="308" />
+        <di:waypoint x="340" y="180" />
+        <di:waypoint x="340" y="160" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
