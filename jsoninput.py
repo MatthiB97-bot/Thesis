@@ -5,19 +5,29 @@ import Globals
 
 
 def execute_dmn():
-    url = "http://localhost:8080/engine-rest/decision-definition/key/"+str(xr.read_decision_key())+"/evaluate"
-    Globals.jsoninput = {"variables": Globals.d}
-
+    xr.readoutput()
+    m = []
     for i in range(len(Globals.myList)):
         Globals.d[str(Globals.myList[i])] = {}
         Globals.d[str(Globals.myList[i])]["value"] = Globals.input[i]
+    Globals.jsoninput = {"variables": Globals.d}
 
+    for p in range(len(Globals.output)):
+        url = "http://localhost:8080/engine-rest/decision-definition/key/"+str(xr.read_decision_key(p))+"/evaluate"
+        headers = {'Content-Type': 'application/json'}
+        response = requests.request("POST", url, headers=headers, data=json.dumps(Globals.jsoninput))
+        try:
+            m.append(response.json()[0][str(Globals.output[p])]["value"])
+        except:
+            return "Your input does not match a decision rule. Send 'again' if you would like to try again."
     print(Globals.jsoninput)
-    headers = {'Content-Type': 'application/json'}
-
-    response = requests.request("POST", url, headers=headers, data=json.dumps(Globals.jsoninput))
-
-    xr.readoutput()
+    lst = []
+    for i in range(len(Globals.output)):
+        lst.append("The output for " + str(Globals.output[i]) + " is: " + str(m[i]))
+    try:
+        a = ','.join(lst)
+    except:
+        a = str(lst)
     Globals.d.clear()
     Globals.jsoninput.clear()
-    return "The output is: " + str(response.json()[0][str(Globals.output[0])]["value"]) + "\nIf you want to try again, send 'again'"
+    return a.replace("'", "").replace(",", "\n").strip('['']') + "\nIf you want to try again, send 'again'"

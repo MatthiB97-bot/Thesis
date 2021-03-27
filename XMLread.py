@@ -1,7 +1,7 @@
 import xmltodict, json
 import Globals
 
-xmlname = "DogLicenseUpdated1.xml"
+xmlname = "multiplelayers.xml"
 
 
 def same_values():
@@ -104,18 +104,50 @@ def same_values():
         checklist.clear()
 
 
+def divide_chunks(l, n):
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
+
+
 def read_input_values(integer):
+    Globals.inputbuttons.clear()
+    with open(xmlname, 'r') as myfile:
+        obj = xmltodict.parse(myfile.read())
+        jsonvar = json.loads(json.dumps(obj))
+    try: #multiple decisions
+        for a in range(len(jsonvar["definitions"]["decision"])):
+            for b in range(len(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"])):
+                if jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] == Globals.myList[integer]:
+                    Globals.varinput.append(Globals.myList[integer])
+                    f = jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputValues"]["text"].replace('"', '').split(",")
+                    Globals.inputbuttons = list(divide_chunks(f, 1))
+                    return jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputValues"]["text"]
+                elif read_input_types(integer) == "boolean":
+                    Globals.inputbuttons = [["Yes"], ["No"]]
+    except: #one decision
+        if read_input_types(integer) == "boolean":
+            Globals.inputbuttons = [["Yes"], ["No"]]
+        else:
+            f = jsonvar["definitions"]["decision"]["decisionTable"]["input"][integer]["inputValues"]["text"].replace('"','').split(",")
+            Globals.inputbuttons = list(divide_chunks(f, 1))
+            Globals.varinput.append(Globals.myList[integer])
+            return jsonvar["definitions"]["decision"]["decisionTable"]["input"][integer]["inputValues"]["text"]
+
+
+def read_input_types(integer):
     with open(xmlname, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
         jsonvar = json.loads(json.dumps(obj))
 
-    try:
+    try: #multiple decisions
         for a in range(len(jsonvar["definitions"]["decision"])):
             for b in range(len(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"])):
                 if jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"] == Globals.myList[integer]:
-                    return jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputValues"]["text"]
-    except:
-        return jsonvar["definitions"]["decision"]["decisionTable"]["input"][integer]["inputValues"]["text"]
+                    return jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["@typeRef"]
+    except: #one decision
+        for b in range(len(jsonvar["definitions"]["decision"]["decisionTable"]["input"])):
+            if jsonvar["definitions"]["decision"]["decisionTable"]["input"][b]["inputExpression"]["text"] == Globals.myList[integer]:
+                return jsonvar["definitions"]["decision"]["decisionTable"]["input"][b]["inputExpression"]["@typeRef"]
 
 
 def read_xml():
@@ -128,7 +160,7 @@ def read_xml():
     list = []
     list.clear()
 
-    try:
+    try: #multiple decision tables
         for i in range(len(jsonvar["definitions"]["decision"])):
             list.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["output"]["@name"])
         for a in range(len(jsonvar["definitions"]["decision"])):
@@ -140,13 +172,13 @@ def read_xml():
                     pass
                 else:
                     Globals.oilist.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][b]["inputExpression"]["text"])
-    except:
+    except: #one decision table
         for a in range(len(jsonvar["definitions"]["decision"]["decisionTable"]["input"])):
             Globals.myList.append(jsonvar["definitions"]["decision"]["decisionTable"]["input"][a]["inputExpression"]["text"])
     print(Globals.myList)
 
 
-def read_decision_key():
+def read_decision_key(integer):
     Globals.decisionkey.clear()
     with open(xmlname, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
@@ -156,9 +188,8 @@ def read_decision_key():
         Globals.decisionkey.append(jsonvar["definitions"]["decision"]["@id"])
     except TypeError:
         for a in range(len(jsonvar["definitions"]["decision"])):
-            if not jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"] in Globals.oilist:
-                Globals.decisionkey.append(jsonvar["definitions"]["decision"][a]["@id"])
-    return Globals.decisionkey[0]
+            Globals.decisionkey.append(jsonvar["definitions"]["decision"][a]["@id"])
+    return Globals.decisionkey[integer]
 
 
 def readoutput():
@@ -171,6 +202,4 @@ def readoutput():
         Globals.output.append(jsonvar["definitions"]["decision"]["decisionTable"]["output"]["@name"])
     except TypeError:
         for a in range(len(jsonvar["definitions"]["decision"])):
-            if not jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"] in Globals.oilist:
-                Globals.output.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"])
-    print(Globals.output)
+            Globals.output.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"])

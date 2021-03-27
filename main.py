@@ -1,5 +1,9 @@
 import logging
+from telegram import ReplyKeyboardMarkup
 import Responses as R
+import distutils
+import distutils.util
+import Globals
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 # Enable logging
@@ -16,25 +20,49 @@ def start(update, context):
     update.message.reply_text('Hi! Welcome to DMN chatbot. Send "ready" if you are ready to start')
 
 
+def predefbuttons(update, context):
+    k = Globals.inputbuttons
+    if len(Globals.inputbuttons) != 0:
+        choice = update.message.reply_text("Choose one of the options:",
+            reply_markup=ReplyKeyboardMarkup(k, one_time_keyboard=True, resize_keyboard=True))
+        return choice
+    else:
+        pass
+
+
 def help(update, context):
     """Send a message when the command /help is issued."""
     update.message.reply_text('If you need help, ask google')
 
 
 def handle_message(update, context):
-    try:
-        float(update.message.text)
-        text = float(update.message.text)
+    if update.message.text.isdigit():
+        text = int(update.message.text)
         response = R.input_response(text)
         update.message.reply_text(response)
-    except ValueError:
-        text = str(update.message.text)
-        if text in ("Ready", "ready", "again", "Again"):
-            response = R.ready_responses()
-            update.message.reply_text(response)
-        else:
+        predefbuttons(update, context)
+    else:
+        try:
+            text = float(update.message.text)
             response = R.input_response(text)
             update.message.reply_text(response)
+            predefbuttons(update, context)
+        except:
+            text = str(update.message.text)
+            if text in ("Ready", "ready", "again", "Again"):
+                Globals.varinput.clear()
+                response = R.ready_responses()
+                update.message.reply_text(response)
+                predefbuttons(update, context)
+            elif text in ("True", "true", "False", "false", "yes", "Yes", "No", "no"):
+                text = bool(distutils.util.strtobool(text))
+                response = R.input_response(text)
+                update.message.reply_text(response)
+                predefbuttons(update, context)
+            else:
+                response = R.input_response(text)
+                update.message.reply_text(response)
+                predefbuttons(update, context)
 
 
 def error(update, context):
@@ -56,6 +84,7 @@ def main():
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(MessageHandler(Filters.text, handle_message))
+    dp.add_handler(MessageHandler(Filters.text, predefbuttons))
 
     # log all errors
     dp.add_error_handler(error)
