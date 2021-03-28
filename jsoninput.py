@@ -23,11 +23,16 @@ def execute_dmn():
     print(Globals.jsoninput)
     lst = []
     for i in range(len(Globals.output)):
-        lst.append("The output for " + str(Globals.output[i]) + " is: " + str(m[i]))
+        if i == 0:
+            lst.append("The final output for " + str(Globals.output[i]) + " is: " + str(m[i]))
+        elif i == 1:
+            lst.append("-------------------------------------------------------" + "\nIntermediate output:\n" + "\nThe output for " + str(Globals.output[i]) + " is: " + str(m[i]))
+        else:
+            lst.append("The output for " + str(Globals.output[i]) + " is: " + str(m[i]))
     try:
         a = ','.join(lst)
     except:
         a = str(lst)
     Globals.d.clear()
     Globals.jsoninput.clear()
-    return a.replace("'", "").replace(",", "\n").strip('['']') + "\nIf you want to try again, send 'again'"
+    return a.replace("'", "").replace(",", "\n").strip('['']')

@@ -1,11 +1,9 @@
 import xmltodict, json
 import Globals
 
-xmlname = "multiplelayers.xml"
-
 
 def same_values():
-    with open(xmlname, 'r') as myfile:
+    with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
         jsonvar = json.loads(json.dumps(obj))
 
@@ -97,7 +95,7 @@ def same_values():
                                     jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"]["inputEntry"][k]["text"].strip('"')
                                     remlist.append(w)
                                     print(remlist)
-        if len(remlist) !=0:
+        if len(remlist) != 0:
             for b in sorted(remlist, reverse=True):
                 Globals.myList.remove(Globals.myList[b])
         remlist.clear()
@@ -111,7 +109,7 @@ def divide_chunks(l, n):
 
 def read_input_values(integer):
     Globals.inputbuttons.clear()
-    with open(xmlname, 'r') as myfile:
+    with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
         jsonvar = json.loads(json.dumps(obj))
     try: #multiple decisions
@@ -135,7 +133,7 @@ def read_input_values(integer):
 
 
 def read_input_types(integer):
-    with open(xmlname, 'r') as myfile:
+    with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
         jsonvar = json.loads(json.dumps(obj))
 
@@ -151,7 +149,7 @@ def read_input_types(integer):
 
 
 def read_xml():
-    with open(xmlname, 'r') as myfile:
+    with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
         jsonvar = json.loads(json.dumps(obj))
 
@@ -180,7 +178,7 @@ def read_xml():
 
 def read_decision_key(integer):
     Globals.decisionkey.clear()
-    with open(xmlname, 'r') as myfile:
+    with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
         jsonvar = json.loads(json.dumps(obj))
 
@@ -188,13 +186,17 @@ def read_decision_key(integer):
         Globals.decisionkey.append(jsonvar["definitions"]["decision"]["@id"])
     except TypeError:
         for a in range(len(jsonvar["definitions"]["decision"])):
-            Globals.decisionkey.append(jsonvar["definitions"]["decision"][a]["@id"])
+            if jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"] not in Globals.oilist:
+                Globals.decisionkey.append(jsonvar["definitions"]["decision"][a]["@id"])
+        for a in range(len(jsonvar["definitions"]["decision"])):
+            if jsonvar["definitions"]["decision"][a]["@id"] not in Globals.decisionkey:
+                Globals.decisionkey.append(jsonvar["definitions"]["decision"][a]["@id"])
     return Globals.decisionkey[integer]
 
 
 def readoutput():
     Globals.output.clear()
-    with open(xmlname, 'r') as myfile:
+    with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
         jsonvar = json.loads(json.dumps(obj))
 
@@ -202,4 +204,9 @@ def readoutput():
         Globals.output.append(jsonvar["definitions"]["decision"]["decisionTable"]["output"]["@name"])
     except TypeError:
         for a in range(len(jsonvar["definitions"]["decision"])):
-            Globals.output.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"])
+            if jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"] not in Globals.oilist:
+                Globals.output.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"])
+        for a in range(len(jsonvar["definitions"]["decision"])):
+            if jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"] not in Globals.output:
+                Globals.output.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"])
+    print(Globals.output)

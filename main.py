@@ -17,13 +17,20 @@ logger = logging.getLogger(__name__)
 # context. Error handlers also receive the raised TelegramError object in error.
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text('Hi! Welcome to DMN chatbot. Send "ready" if you are ready to start')
+    Globals.model = ""
+    update.message.reply_text("Hi! Welcome to DMN chatbot. Please choose the DMN model you want to run:\nIf you want to adjust your input, please send 'Again'.\nIf you need help press /help", reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
+
+
+def restart(update, context):
+    """Send a message when the command /start is issued."""
+    Globals.model = ""
+    update.message.reply_text('Please choose the DMN model you want to run:', reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
 
 
 def predefbuttons(update, context):
     k = Globals.inputbuttons
     if len(Globals.inputbuttons) != 0:
-        choice = update.message.reply_text("Choose one of the options:",
+        choice = update.message.reply_text(Globals.buttonstext,
             reply_markup=ReplyKeyboardMarkup(k, one_time_keyboard=True, resize_keyboard=True))
         return choice
     else:
@@ -32,7 +39,7 @@ def predefbuttons(update, context):
 
 def help(update, context):
     """Send a message when the command /help is issued."""
-    update.message.reply_text('If you need help, ask google')
+    update.message.reply_text('- Scroll to view all buttons\n-------------------------------------\nTo go back to the DMN chatbot press /start')
 
 
 def handle_message(update, context):
@@ -49,7 +56,14 @@ def handle_message(update, context):
             predefbuttons(update, context)
         except:
             text = str(update.message.text)
-            if text in ("Ready", "ready", "again", "Again"):
+            if [text] in Globals.dmnmodels:
+                Globals.model = text+".xml"
+                response = R.ready_responses()
+                update.message.reply_text(response)
+                predefbuttons(update, context)
+            elif text in ("Change"):
+                restart(update, context)
+            elif text in ("again", "Again"):
                 Globals.varinput.clear()
                 response = R.ready_responses()
                 update.message.reply_text(response)

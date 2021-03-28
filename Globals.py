@@ -1,3 +1,7 @@
+dmnmodels = [['BMILevel'], ['datetest'], ['dinnerDecisions'], ['DogLicense'], ['InsuranceClaim'], ['multiplelayers'],
+             ["onedtonerule"], ["ski guide"], ["testdmn"]]
+model = ""
+buttonstext = ""
 myList = []
 input = []
 decisionkey = []
