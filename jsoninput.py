@@ -19,16 +19,16 @@ def execute_dmn():
         try:
             m.append(response.json()[0][str(Globals.output[p])]["value"])
         except:
-            return "Your input does not match a decision rule. Send 'again' if you would like to try again."
+            return "Unfortunately, I can't make a decision based on your input. If you want to try again, send me 'again'."
     print(Globals.jsoninput)
     lst = []
     for i in range(len(Globals.output)):
         if i == 0:
-            lst.append("The final output for " + str(Globals.output[i]) + " is: " + str(m[i]))
+            lst.append("The outcome of the " + str(Globals.output[i]) + " decision is " + str(m[i]) + ".")
         elif i == 1:
-            lst.append("-------------------------------------------------------" + "\nIntermediate output:\n" + "\nThe output for " + str(Globals.output[i]) + " is: " + str(m[i]))
+            lst.append("We used the following information in order to find the final outcome:\n" + "- The " + str(Globals.output[i]) + " is " + str(m[i]) )
         else:
-            lst.append("The output for " + str(Globals.output[i]) + " is: " + str(m[i]))
+            lst.append("- The " + str(Globals.output[i]) + " is " + str(m[i]))
     try:
         a = ','.join(lst)
     except:
@@ -36,3 +36,16 @@ def execute_dmn():
     Globals.d.clear()
     Globals.jsoninput.clear()
     return a.replace("'", "").replace(",", "\n").strip('['']')
+
+
+def deploy_dmn():
+
+    url = "http://localhost:8080/engine-rest/deployment/create"
+
+    payload = {}
+    files = [('upload', ('deploycheck.dmn', open('/C:/Users/willi/Documents/THESIS/deploycheck.dmn', 'rb'), 'application/octet-stream'))]
+    headers = {'Content-Type': 'multipart/form-data'}
+
+    response = requests.request("POST", url, headers=headers, data=payload, files=files)
+
+    print(response.text)

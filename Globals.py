@@ -1,4 +1,4 @@
-dmnmodels = [['BMILevel'], ['datetest'], ['dinnerDecisions'], ['DogLicense'], ['InsuranceClaim'], ['multiplelayers'],
+dmnmodels = [['BMILevel'], ['datetest'],['daydrinking'], ['dinnerDecisions'], ['DogLicense'], ['InsuranceClaim'], ['multiplelayers'],
              ["onedtonerule"], ["ski guide"], ["testdmn"]]
 model = ""
 buttonstext = ""
