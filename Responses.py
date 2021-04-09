@@ -3,10 +3,28 @@ import XMLread as X
 import jsoninput as JS
 
 
+def subdecision_response():
+    X.read_decision_name()
+
+    if len(Globals.decisionname) > 1:
+        Globals.inputbuttons = Globals.decisionname
+        Globals.buttonstext = "This is a list of all decisions in the model, you can select the decision your interested in. To know the final outcome, select the decision on top"
+        return "Great, you have selected a valid DMN model."
+    else:
+        return ready_responses()
+
+
 def ready_responses():
     Globals.input.clear()
-    X.read_xml()
-    X.same_values()
+    X.subread_xml()
+
+    for i in range(len(Globals.decisionname)):
+        X.same_values(Globals.decisionname[i])
+
+    if len(Globals.myList) == 0:
+        Globals.inputbuttons = [["Again"], ["Choose another existing decision"], ["Upload your own decision"]]
+        Globals.buttonstext = "\nYou can run the same decision again by pressing the 'again' button. If you want to make another decision, press the 'Change' button."
+        return JS.execute_dmn()
     Globals.q = 0
     Globals.a = 0
     Globals.buttonstext = 'You can use the buttons below to choose one of the options.'
@@ -27,6 +45,15 @@ def input_response(input):
             pass
 
     if [input] not in Globals.dmnmodels:
+        if input in ("Back", "back", "BACK"):
+            Globals.a = Globals.a - 1
+            Globals.q = Globals.q - 1
+            Globals.input.pop()
+            try:
+                X.read_input_values(Globals.a)
+            except:
+                pass
+            return "Provide " + str(Globals.myList[Globals.a]) + " with an input value."
         if type(input) == Globals.typedict[X.read_input_types(Globals.q)]: #check if type of input is correct type
             Globals.input.append(input)
             Globals.q = Globals.q + 1
@@ -35,11 +62,11 @@ def input_response(input):
                 X.read_input_values(Globals.a)
             except:
                 pass
-            return "It seems like you entered the wrong type of input, the correct input type is "+str(X.read_input_types(Globals.q))+". Please try again."
+            return "It seems like you entered the wrong type of input, the correct input type is "+str(X.read_input_types(Globals.q))+". Give it another shot!"
 
         if len(Globals.myList) != 0 and len(Globals.myList) == len(Globals.input):
             Globals.a = 0
-            Globals.inputbuttons = [["Again"], ["Change"]]
+            Globals.inputbuttons = [["Again"], ["Choose another existing decision"], ["Upload your own decision"]]
             Globals.buttonstext = "\nYou can run the same decision again by pressing the 'again' button. If you want to make another decision, press the 'Change' button."
             return JS.execute_dmn()
 

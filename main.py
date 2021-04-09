@@ -4,8 +4,8 @@ import Responses as R
 import distutils
 import distutils.util
 import Globals
+import jsoninput
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-import telegram.ext
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 def start(update, context):
     """Send a message when the command /start is issued."""
     Globals.model = ""
-    update.message.reply_text("Hi, I am the DMN chatbot. You can choose the decision you want to make in the list below.\nWhen you want to adjust your previous input, send 'Adjust'.\nIn case you have any questions, send /help", reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
+    update.message.reply_text("Hi, I am the DMN chatbot. Do you want to make a predefined decision or do you want to upload your own decision?\nIn case you have any questions, send /help", reply_markup=ReplyKeyboardMarkup([["Use predefined decision"], ["Upload new decision"]], one_time_keyboard=True, resize_keyboard=True))
 
 
 def restart(update, context):
@@ -57,16 +57,35 @@ def handle_message(update, context):
             predefbuttons(update, context)
         except:
             text = str(update.message.text)
-            if [text] in Globals.dmnmodels:
+            if [text] in Globals.dmnmodels and Globals.counter == 0:
+                Globals.counter = Globals.counter + 1
                 Globals.model = text+".xml"
+                response = R.subdecision_response()
+                update.message.reply_text(response)
+                predefbuttons(update, context)
+            elif text in ("Upload new decision", "Upload your own decision"):
+                Globals.counter = 0
+                update.message.reply_text("To upload your own decision, press the paperclip button and make sure the file format is .dmn")
+            elif text in "Use predefined decision":
+                Globals.counter = 0
+                update.message.reply_text("This is a list of all existing decisions, you can choose one of them.", reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
+            elif text in "Choose another existing decision":
+                Globals.counter = 0
+                restart(update, context)
+            elif text in ("back", "Back", "BACK"):
+                response = R.input_response(text)
+                update.message.reply_text(response)
+                predefbuttons(update, context)
+            elif [text] in Globals.decisionname:
+                Globals.subdecvar = 1
+                #Globals.key = Globals.decisionkey[Globals.decisionname.index([text])]
+                Globals.name = text
                 response = R.ready_responses()
                 update.message.reply_text(response)
                 predefbuttons(update, context)
-            elif text in ("Change"):
-                restart(update, context)
             elif text in ("again", "Again"):
                 Globals.varinput.clear()
-                response = R.ready_responses()
+                response = R.subdecision_response()
                 update.message.reply_text(response)
                 predefbuttons(update, context)
             elif text in ("True", "true", "False", "false", "yes", "Yes", "No", "no"):
@@ -81,12 +100,22 @@ def handle_message(update, context):
 
 
 def downloader(update, context):
-    x = str(update.message.document["file_name"]).removesuffix(".dmn")
-    Globals.dmnmodels.append([x])
-    print(Globals.dmnmodels)
-    context.bot.get_file(update.message.document)
-    with open("C:/Users/willi/PycharmProjects/pythonProject/"+x+".xml", 'wb') as f:
-        context.bot.get_file(update.message.document).download(out=f)
+    Globals.deployname = str(update.message.document["file_name"]).removesuffix(".dmn")
+    if [Globals.deployname] in Globals.dmnmodels:
+        update.message.reply_text("I'm sorry, there already exists a decision with this name. You can choose this decision from the list or rename your file and reupload it.", reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
+    else:
+        Globals.dmnmodels.append([Globals.deployname])
+        with open("C:/Users/willi/PycharmProjects/pythonProject/"+Globals.deployname+".dmn", 'wb') as f:
+            context.bot.get_file(update.message.document).download(out=f)
+        with open("C:/Users/willi/PycharmProjects/pythonProject/"+Globals.deployname+".xml", 'wb') as f:
+            context.bot.get_file(update.message.document).download(out=f)
+        Globals.model = ""
+        Globals.model = Globals.deployname+".xml"
+        jsoninput.deploy_dmn(Globals.deployname)
+        response = R.subdecision_response()
+        update.message.reply_text(response)
+        predefbuttons(update, context)
+
 
 def error(update, context):
     """Log Errors caused by Updates."""

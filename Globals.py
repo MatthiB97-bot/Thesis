@@ -2,9 +2,16 @@ dmnmodels = [['BMILevel'], ['datetest'],['daydrinking'], ['dinnerDecisions'], ['
              ["onedtonerule"], ["ski guide"], ["testdmn"]]
 model = ""
 buttonstext = ""
+deployname = ""
+key = ""
+name = ""
+subdecvar = 0
+counter = 0
 myList = []
+notmyList = []
 input = []
 decisionkey = []
+decisionname = []
 output = []
 oilist = []
 inputbuttons = []
