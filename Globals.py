@@ -1,5 +1,5 @@
 dmnmodels = [['BMILevel'], ['datetest'],['daydrinking'], ['dinnerDecisions'], ['DogLicense'], ['InsuranceClaim'], ['multiplelayers'],
-             ["onedtonerule"], ["ski guide"], ["testdmn"]]
+             ["onedtonerule"], ["ski guide"], ["testdmn"], ["simple"]]
 model = ""
 buttonstext = ""
 deployname = ""

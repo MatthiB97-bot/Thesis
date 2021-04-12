@@ -17,12 +17,13 @@ def subdecision_response():
 def ready_responses():
     Globals.input.clear()
     X.subread_xml()
+    X.readoutput()
 
-    for i in range(len(Globals.decisionname)):
-        X.same_values(Globals.decisionname[i])
+    for i in range(len(Globals.output)):
+        X.same_values(Globals.output[i])
 
     if len(Globals.myList) == 0:
-        Globals.inputbuttons = [["Again"], ["Choose another existing decision"], ["Upload your own decision"]]
+        Globals.inputbuttons = [["Again"], ["Choose another existing decision"], ["Upload your own decision"], ["End the conversation"]]
         Globals.buttonstext = "\nYou can run the same decision again by pressing the 'again' button. If you want to make another decision, press the 'Change' button."
         return JS.execute_dmn()
     Globals.q = 0
@@ -66,7 +67,7 @@ def input_response(input):
 
         if len(Globals.myList) != 0 and len(Globals.myList) == len(Globals.input):
             Globals.a = 0
-            Globals.inputbuttons = [["Again"], ["Choose another existing decision"], ["Upload your own decision"]]
+            Globals.inputbuttons = [["Again"], ["Choose another existing decision"], ["Upload your own decision"], ["End the conversation"]]
             Globals.buttonstext = "\nYou can run the same decision again by pressing the 'again' button. If you want to make another decision, press the 'Change' button."
             return JS.execute_dmn()
 

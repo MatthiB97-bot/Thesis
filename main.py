@@ -28,14 +28,14 @@ def restart(update, context):
     update.message.reply_text('Which decision would you like to make now?', reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
 
 
-def predefbuttons(update, context):
+def predefbuttons(update, context, wadagewilt):
     k = Globals.inputbuttons
     if len(Globals.inputbuttons) != 0:
-        choice = update.message.reply_text(Globals.buttonstext,
+        choice = update.message.reply_text(wadagewilt,
             reply_markup=ReplyKeyboardMarkup(k, one_time_keyboard=True, resize_keyboard=True))
         return choice
     else:
-        pass
+        return update.message.reply_text(wadagewilt)
 
 
 def help(update, context):
@@ -47,56 +47,58 @@ def handle_message(update, context):
     if update.message.text.isdigit():
         text = int(update.message.text)
         response = R.input_response(text)
-        update.message.reply_text(response)
-        predefbuttons(update, context)
+        #update.message.reply_text(response)
+        predefbuttons(update, context, response)
     else:
         try:
             text = float(update.message.text)
             response = R.input_response(text)
-            update.message.reply_text(response)
-            predefbuttons(update, context)
+            #update.message.reply_text(response)
+            predefbuttons(update, context, response)
         except:
             text = str(update.message.text)
             if [text] in Globals.dmnmodels and Globals.counter == 0:
                 Globals.counter = Globals.counter + 1
                 Globals.model = text+".xml"
                 response = R.subdecision_response()
-                update.message.reply_text(response)
-                predefbuttons(update, context)
+                #update.message.reply_text(response)
+                predefbuttons(update, context, response)
             elif text in ("Upload new decision", "Upload your own decision"):
                 Globals.counter = 0
-                update.message.reply_text("To upload your own decision, press the paperclip button and make sure the file format is .dmn")
+                update.message.reply_text("To upload your own decision, press the paperclip button and make sure the file format is .dmn.")
             elif text in "Use predefined decision":
                 Globals.counter = 0
                 update.message.reply_text("This is a list of all existing decisions, you can choose one of them.", reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
             elif text in "Choose another existing decision":
                 Globals.counter = 0
                 restart(update, context)
+            elif text in "End the conversation":
+                update.message.reply_text("I hope I have helped you, do not hesitate to message me again if you need any help.\nGoodbye!")
             elif text in ("back", "Back", "BACK"):
                 response = R.input_response(text)
-                update.message.reply_text(response)
-                predefbuttons(update, context)
+                #update.message.reply_text(response)
+                predefbuttons(update, context, response)
             elif [text] in Globals.decisionname:
                 Globals.subdecvar = 1
                 #Globals.key = Globals.decisionkey[Globals.decisionname.index([text])]
                 Globals.name = text
                 response = R.ready_responses()
-                update.message.reply_text(response)
-                predefbuttons(update, context)
+                #update.message.reply_text(response)
+                predefbuttons(update, context, response)
             elif text in ("again", "Again"):
                 Globals.varinput.clear()
                 response = R.subdecision_response()
-                update.message.reply_text(response)
-                predefbuttons(update, context)
+                #update.message.reply_text(response)
+                predefbuttons(update, context, response)
             elif text in ("True", "true", "False", "false", "yes", "Yes", "No", "no"):
                 text = bool(distutils.util.strtobool(text))
                 response = R.input_response(text)
-                update.message.reply_text(response)
-                predefbuttons(update, context)
+                #update.message.reply_text(response)
+                predefbuttons(update, context, response)
             else:
                 response = R.input_response(text)
-                update.message.reply_text(response)
-                predefbuttons(update, context)
+                #update.message.reply_text(response)
+                predefbuttons(update, context, response)
 
 
 def downloader(update, context):
@@ -113,8 +115,8 @@ def downloader(update, context):
         Globals.model = Globals.deployname+".xml"
         jsoninput.deploy_dmn(Globals.deployname)
         response = R.subdecision_response()
-        update.message.reply_text(response)
-        predefbuttons(update, context)
+        #update.message.reply_text(response)
+        predefbuttons(update, context, response)
 
 
 def error(update, context):

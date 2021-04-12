@@ -5,9 +5,9 @@ import Globals
 
 
 def execute_dmn():
-    xr.readoutput()
-
+    #xr.readoutput()
     m = []
+
     try:
         for i in range(len(Globals.myList)):
             Globals.d[str(Globals.myList[i])] = {}
@@ -16,21 +16,8 @@ def execute_dmn():
     except:
         Globals.jsoninput = {"variables": Globals.d}
 
-    """if Globals.subdecvar == 1:
-        Globals.subdecvar = 0
-        url = "http://localhost:8080/engine-rest/decision-definition/key/" + Globals.key + "/evaluate"
-        headers = {'Content-Type': 'application/json'}
-        response = requests.request("POST", url, headers=headers, data=json.dumps(Globals.jsoninput))
-        try:
-            m.append(response.json()[0][Globals.name]["value"])
-            a = "The outcome of the " + "`" + Globals.name + "´" + " decision is " + "`" + str(m).strip('['']') + "´."
-        except:
-            return "Unfortunately, I can't make a decision based on your input. If you want to try again, send me 'again'."
-
-    else:"""
     print(Globals.jsoninput)
     for p in range(len(Globals.output)):
-        print(str(xr.read_decision_key(Globals.output[p])))
         url = "http://localhost:8080/engine-rest/decision-definition/key/"+str(xr.read_decision_key(Globals.output[p]))+"/evaluate"
         headers = {'Content-Type': 'application/json'}
         response = requests.request("POST", url, headers=headers, data=json.dumps(Globals.jsoninput))
@@ -62,4 +49,4 @@ def deploy_dmn(name):
     url = "http://localhost:8080/engine-rest/deployment/create"
     payload = {}
     files = [('upload', (name + '.dmn', open('C:/Users/willi/PycharmProjects/pythonProject/'+name+'.dmn', 'rb'), 'application/octet-stream'))]
-    response = requests.request("POST", url, data=payload, files=files)
+    requests.request("POST", url, data=payload, files=files)
