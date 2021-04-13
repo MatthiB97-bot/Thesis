@@ -5,7 +5,6 @@ import Globals
 
 
 def execute_dmn():
-    #xr.readoutput()
     m = []
 
     try:

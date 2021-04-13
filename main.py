@@ -19,13 +19,13 @@ logger = logging.getLogger(__name__)
 def start(update, context):
     """Send a message when the command /start is issued."""
     Globals.model = ""
-    update.message.reply_text("Hi, I am the DMN chatbot. Do you want to make a predefined decision or do you want to upload your own decision?\nIn case you have any questions, send /help", reply_markup=ReplyKeyboardMarkup([["Use predefined decision"], ["Upload new decision"]], one_time_keyboard=True, resize_keyboard=True))
+    update.message.reply_text("Hi, I am the DMN chatbot. How can I help you today?\nIn case you have any questions, send /help", reply_markup=ReplyKeyboardMarkup([["I want to execute a predefined DMN model"], ["I want to upload a new DMN model"]], one_time_keyboard=True, resize_keyboard=True))
 
 
 def restart(update, context):
     """Send a message when the command /start is issued."""
     Globals.model = ""
-    update.message.reply_text('Which decision would you like to make now?', reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
+    update.message.reply_text('Which decision would you want to make now?', reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
 
 
 def predefbuttons(update, context, wadagewilt):
@@ -47,13 +47,11 @@ def handle_message(update, context):
     if update.message.text.isdigit():
         text = int(update.message.text)
         response = R.input_response(text)
-        #update.message.reply_text(response)
         predefbuttons(update, context, response)
     else:
         try:
             text = float(update.message.text)
             response = R.input_response(text)
-            #update.message.reply_text(response)
             predefbuttons(update, context, response)
         except:
             text = str(update.message.text)
@@ -61,50 +59,47 @@ def handle_message(update, context):
                 Globals.counter = Globals.counter + 1
                 Globals.model = text+".xml"
                 response = R.subdecision_response()
-                #update.message.reply_text(response)
                 predefbuttons(update, context, response)
-            elif text in ("Upload new decision", "Upload your own decision"):
+            elif text in ("Upload your own DMN model", "I want to upload a new DMN model"):
+                Globals.w = -1
                 Globals.counter = 0
-                update.message.reply_text("To upload your own decision, press the paperclip button and make sure the file format is .dmn.")
-            elif text in "Use predefined decision":
+                update.message.reply_text("To upload your own DMN model press the attach button. Notice, the file format has to be .dmn.")
+            elif text in "I want to execute a predefined DMN model":
+                Globals.w = -1
                 Globals.counter = 0
-                update.message.reply_text("This is a list of all existing decisions, you can choose one of them.", reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
-            elif text in "Choose another existing decision":
+                update.message.reply_text("Choose one of the existing DMN models below.", reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
+            elif text in "Choose another existing DMN model":
+                Globals.w = -1
                 Globals.counter = 0
                 restart(update, context)
             elif text in "End the conversation":
                 update.message.reply_text("I hope I have helped you, do not hesitate to message me again if you need any help.\nGoodbye!")
             elif text in ("back", "Back", "BACK"):
                 response = R.input_response(text)
-                #update.message.reply_text(response)
                 predefbuttons(update, context, response)
             elif [text] in Globals.decisionname:
                 Globals.subdecvar = 1
-                #Globals.key = Globals.decisionkey[Globals.decisionname.index([text])]
                 Globals.name = text
                 response = R.ready_responses()
-                #update.message.reply_text(response)
                 predefbuttons(update, context, response)
             elif text in ("again", "Again"):
+                Globals.w = -1
                 Globals.varinput.clear()
                 response = R.subdecision_response()
-                #update.message.reply_text(response)
                 predefbuttons(update, context, response)
             elif text in ("True", "true", "False", "false", "yes", "Yes", "No", "no"):
                 text = bool(distutils.util.strtobool(text))
                 response = R.input_response(text)
-                #update.message.reply_text(response)
                 predefbuttons(update, context, response)
             else:
                 response = R.input_response(text)
-                #update.message.reply_text(response)
                 predefbuttons(update, context, response)
 
 
 def downloader(update, context):
     Globals.deployname = str(update.message.document["file_name"]).removesuffix(".dmn")
     if [Globals.deployname] in Globals.dmnmodels:
-        update.message.reply_text("I'm sorry, there already exists a decision with this name. You can choose this decision from the list or rename your file and reupload it.", reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
+        update.message.reply_text("I'm sorry, there already exists a DMN model with this name. You can choose this model from the list or rename your file and try to upload it again.", reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
     else:
         Globals.dmnmodels.append([Globals.deployname])
         with open("C:/Users/willi/PycharmProjects/pythonProject/"+Globals.deployname+".dmn", 'wb') as f:
@@ -115,7 +110,6 @@ def downloader(update, context):
         Globals.model = Globals.deployname+".xml"
         jsoninput.deploy_dmn(Globals.deployname)
         response = R.subdecision_response()
-        #update.message.reply_text(response)
         predefbuttons(update, context, response)
 
 

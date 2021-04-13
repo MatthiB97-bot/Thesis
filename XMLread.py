@@ -76,11 +76,12 @@ def same_values(decision):
             try:  # one decision, multiple rules, multiple entries - all input the same
                 for n in sorted(remlist, reverse=True):
                     Globals.myList.remove(Globals.myList[n])
+                    Globals.mylabels.remove(Globals.mylabels[n])
             except:  # one decision, multiple rules, one entry -- all input the same
                 Globals.myList.remove(Globals.myList[0])
+                Globals.mylabels.remove(Globals.mylabels[0])
             remlist.clear()
     except:  # multiple decision tables
-        #w = -1
         checklist = []
         for n in decisions:
             if jsonvar["definitions"]["decision"][n]["decisionTable"]["output"]["@name"] == decision:
@@ -99,11 +100,11 @@ def same_values(decision):
                 for k in entries:
                     try:  # multiple entries
                         try:  # multiple entries, multiple rules
-                            w = 0
                             a = 0
-                            if jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"] not in checklist:
+                            if jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"] not in checklist\
+                                    and jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"] not in Globals.oilist:
                                 checklist.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"])  # ensure uniqueness
-                                w = w + 1
+                                Globals.w = Globals.w +1
                                 sameval.clear()
 
                                 for m in rules:
@@ -113,16 +114,16 @@ def same_values(decision):
                                         if i == sameval[0]:
                                             a = a + 1
                                         if len(sameval) == a and jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
-                                            Globals.d[str(Globals.myList[w])] = {}
-                                            Globals.d[str(Globals.myList[w])]["value"] = jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][0]["inputEntry"][k]["text"].strip('"')
-                                            remlist.append(w)
+                                            Globals.d[str(Globals.myList[Globals.w])] = {}
+                                            Globals.d[str(Globals.myList[Globals.w])]["value"] = jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][0]["inputEntry"][k]["text"].strip('"')
+                                            remlist.append(Globals.w)
 
                         except:  # multiple entries, one rule
-                            w = 0
                             a = 0
-                            if jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"] not in checklist:
+                            if jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"] not in checklist\
+                                    and jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"] not in Globals.oilist:
                                 checklist.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["text"])  # ensure uniqueness
-                                w = w + 1
+                                Globals.w = Globals.w + 1
                                 sameval.clear()
                                 sameval.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"]["inputEntry"][k]["text"])
 
@@ -131,16 +132,16 @@ def same_values(decision):
                                         if i == sameval[0]:
                                             a = a + 1
                                         if len(sameval) == a and jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
-                                            Globals.d[str(Globals.myList[w])] = {}
-                                            Globals.d[str(Globals.myList[w])]["value"] = jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"]["inputEntry"][k]["text"].strip('"')
-                                            remlist.append(w)
+                                            Globals.d[str(Globals.myList[Globals.w])] = {}
+                                            Globals.d[str(Globals.myList[Globals.w])]["value"] = jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"]["inputEntry"][k]["text"].strip('"')
+                                            remlist.append(Globals.w)
                     except:  # one entry
                         try:  # one entry multiple rules
-                            w = -1
                             a = 0
-                            if jsonvar["definitions"]["decision"][n]["decisionTable"]["input"]["inputExpression"]["text"] not in checklist:
+                            if jsonvar["definitions"]["decision"][n]["decisionTable"]["input"]["inputExpression"]["text"] not in checklist\
+                                    and jsonvar["definitions"]["decision"][n]["decisionTable"]["input"]["inputExpression"]["text"] not in Globals.oilist:
                                 checklist.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["input"]["inputExpression"]["text"])  # ensure uniqueness
-                                w = w + 1
+                                Globals.w = Globals.w +1
                                 sameval.clear()
 
                                 for m in rules:
@@ -150,16 +151,16 @@ def same_values(decision):
                                         if i == sameval[0]:
                                             a = a + 1
                                         if len(sameval) == a and jsonvar["definitions"]["decision"][n]["decisionTable"]["input"]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
-                                            Globals.d[str(Globals.myList[w])] = {}
-                                            Globals.d[str(Globals.myList[w])]["value"] = jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][0]["inputEntry"]["text"].strip('"')
-                                            remlist.append(w)
+                                            Globals.d[str(Globals.myList[Globals.w])] = {}
+                                            Globals.d[str(Globals.myList[Globals.w])]["value"] = jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][0]["inputEntry"]["text"].strip('"')
+                                            remlist.append(Globals.w)
 
                         except:  # one rule, one entry
-                            w = 0
                             a = 0
-                            if jsonvar["definitions"]["decision"][n]["decisionTable"]["input"]["inputExpression"]["text"] not in checklist:
+                            if jsonvar["definitions"]["decision"][n]["decisionTable"]["input"]["inputExpression"]["text"] not in checklist\
+                                    and jsonvar["definitions"]["decision"][n]["decisionTable"]["input"]["inputExpression"]["text"] not in Globals.oilist:
                                 checklist.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["input"]["inputExpression"]["text"])  # ensure uniqueness
-                                w = w + 1
+                                Globals.w = Globals.w +1
                                 sameval.clear()
                                 sameval.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"]["inputEntry"]["text"])
 
@@ -168,14 +169,15 @@ def same_values(decision):
                                         if i == sameval[0]:
                                             a = a + 1
                                         if len(sameval) == a and jsonvar["definitions"]["decision"][n]["decisionTable"]["input"]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
-                                            Globals.d[str(Globals.myList[w])] = {}
-                                            Globals.d[str(Globals.myList[w])]["value"] = jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"]["inputEntry"]["text"].strip('"')
-                                            remlist.append(w)
+                                            Globals.d[str(Globals.myList[Globals.w])] = {}
+                                            Globals.d[str(Globals.myList[Globals.w])]["value"] = jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"]["inputEntry"]["text"].strip('"')
+                                            remlist.append(Globals.w)
 
 
         if len(remlist) != 0:
             for b in sorted(remlist, reverse=True):
                 Globals.myList.remove(Globals.myList[b])
+                Globals.mylabels.remove(Globals.mylabels[b])
         remlist.clear()
         checklist.clear()
 
@@ -261,11 +263,8 @@ def subread_xml():
         obj = xmltodict.parse(myfile.read())
         jsonvar = json.loads(json.dumps(obj))
 
-    #Globals.notmyList.clear()
-    #Globals.oilist.clear()
     Globals.myList.clear()
-    #list = []
-    #list.clear()
+    Globals.mylabels.clear()
 
     try:  # multiple decisions
         for k in range(len(jsonvar["definitions"]["decision"])):
@@ -275,20 +274,26 @@ def subread_xml():
                         if jsonvar["definitions"]["decision"][k]["decisionTable"]["input"][d]["inputExpression"]["text"] not in Globals.oilist\
                                 and jsonvar["definitions"]["decision"][k]["decisionTable"]["input"][d]["inputExpression"]["text"] not in Globals.myList:
                             Globals.myList.append(jsonvar["definitions"]["decision"][k]["decisionTable"]["input"][d]["inputExpression"]["text"])
+                            Globals.mylabels.append(jsonvar["definitions"]["decision"][k]["decisionTable"]["input"][d]["@label"])
                         else:
                             recursive_function(jsonvar["definitions"]["decision"][k]["decisionTable"]["input"][d]["inputExpression"]["text"])
                 except:
                     if jsonvar["definitions"]["decision"][k]["decisionTable"]["input"]["inputExpression"]["text"] not in Globals.oilist \
                             and jsonvar["definitions"]["decision"][k]["decisionTable"]["input"]["inputExpression"]["text"] not in Globals.myList:
                         Globals.myList.append(jsonvar["definitions"]["decision"][k]["decisionTable"]["input"]["inputExpression"]["text"])
+                        Globals.mylabels.append(jsonvar["definitions"]["decision"][k]["decisionTable"]["input"]["@label"])
+
                     else:
                         recursive_function(jsonvar["definitions"]["decision"][k]["decisionTable"]["input"]["inputExpression"]["text"])
     except:  # one decision
         try:  # one decision one input
             Globals.myList.append(jsonvar["definitions"]["decision"]["decisionTable"]["input"]["inputExpression"]["text"])
+            Globals.mylabels.append(jsonvar["definitions"]["decision"]["decisionTable"]["input"]["@label"])
+
         except:  # one decision multiple input
             for a in range(len(jsonvar["definitions"]["decision"]["decisionTable"]["input"])):
                 Globals.myList.append(jsonvar["definitions"]["decision"]["decisionTable"]["input"][a]["inputExpression"]["text"])
+                Globals.mylabels.append(jsonvar["definitions"]["decision"]["decisionTable"]["input"][a]["@label"])
 
 
 def recursive_function(dname):
@@ -303,12 +308,15 @@ def recursive_function(dname):
                     if jsonvar["definitions"]["decision"][p]["decisionTable"]["input"][m]["inputExpression"]["text"] not in Globals.oilist\
                             and jsonvar["definitions"]["decision"][p]["decisionTable"]["input"][m]["inputExpression"]["text"] not in Globals.myList:
                         Globals.myList.append(jsonvar["definitions"]["decision"][p]["decisionTable"]["input"][m]["inputExpression"]["text"])
+                        Globals.mylabels.append(jsonvar["definitions"]["decision"][p]["decisionTable"]["input"][m]["@label"])
                     else:
                         recursive_function(jsonvar["definitions"]["decision"][p]["decisionTable"]["input"][m]["inputExpression"]["text"])
             except:
                 if jsonvar["definitions"]["decision"][p]["decisionTable"]["input"]["inputExpression"]["text"] not in Globals.oilist \
                         and jsonvar["definitions"]["decision"][p]["decisionTable"]["input"]["inputExpression"]["text"] not in Globals.myList:
                     Globals.myList.append(jsonvar["definitions"]["decision"][p]["decisionTable"]["input"]["inputExpression"]["text"])
+                    Globals.mylabels.append(jsonvar["definitions"]["decision"][p]["decisionTable"]["input"]["@label"])
+
                 else:
                     recursive_function(jsonvar["definitions"]["decision"][p]["decisionTable"]["input"]["inputExpression"]["text"])
 
@@ -348,7 +356,7 @@ def read_decision_name():
         for z in range(len(jsonvar["definitions"]["decision"])):
             if jsonvar["definitions"]["decision"][z]["decisionTable"]["output"]["@name"] not in Globals.oilist:
                 Globals.decisionname.append([jsonvar["definitions"]["decision"][z]["decisionTable"]["output"]["@name"]])
-
+        Globals.decisionname.append("SUBDECISIONS")
         for z in range(len(jsonvar["definitions"]["decision"])):
             if [jsonvar["definitions"]["decision"][z]["decisionTable"]["output"]["@name"]] not in Globals.decisionname:
                 Globals.decisionname.append([jsonvar["definitions"]["decision"][z]["decisionTable"]["output"]["@name"]])
@@ -357,14 +365,12 @@ def read_decision_name():
 
 
 def read_decision_key(keyname):
-    #Globals.decisionkey.clear()
     Globals.decisionname.clear()
     with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
         jsonvar = json.loads(json.dumps(obj))
 
     try:  # one decision
-        #Globals.decisionkey.append(jsonvar["definitions"]["decision"]["@id"])
         return jsonvar["definitions"]["decision"]["@id"]
     except TypeError:  # multiple decisions
         for a in range(len(jsonvar["definitions"]["decision"])):
@@ -372,10 +378,9 @@ def read_decision_key(keyname):
                 return jsonvar["definitions"]["decision"][a]["@id"]
 
 
-
-
 def readoutput():
     Globals.output.clear()
+
     with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
         jsonvar = json.loads(json.dumps(obj))
@@ -385,24 +390,16 @@ def readoutput():
     except TypeError:  # multiple decisions
         for a in range(len(jsonvar["definitions"]["decision"])):
             if jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"] == Globals.name:
-                if jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"] in Globals.oilist:
-                    try:
-                        for k in range(len(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"])):
-                            if jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][k]["inputExpression"]["text"] in Globals.oilist\
-                                    and jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][k]["inputExpression"]["text"] not in Globals.output:
-                                recursive_output_function(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][k]["inputExpression"]["text"])
-
-                            elif jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"] not in Globals.output:
-                                Globals.output.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"])
-                    except:
-                        if jsonvar["definitions"]["decision"][a]["decisionTable"]["input"]["inputExpression"]["text"] in Globals.oilist \
-                                and jsonvar["definitions"]["decision"][a]["decisionTable"]["input"]["inputExpression"]["text"] not in Globals.output:
-                            recursive_output_function(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"]["inputExpression"]["text"])
-                        elif jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"] not in Globals.output:
-                            Globals.output.append(jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"])
-                else:
-                    for h in range(len(jsonvar["definitions"]["decision"])):
-                        Globals.output.append(jsonvar["definitions"]["decision"][h]["decisionTable"]["output"]["@name"])
+                Globals.output.append(Globals.name)
+                try:
+                    for k in range(len(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"])):
+                        if jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][k]["inputExpression"]["text"] in Globals.oilist\
+                                and jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][k]["inputExpression"]["text"] not in Globals.output:
+                            recursive_output_function(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"][k]["inputExpression"]["text"])
+                except:
+                    if jsonvar["definitions"]["decision"][a]["decisionTable"]["input"]["inputExpression"]["text"] in Globals.oilist \
+                            and jsonvar["definitions"]["decision"][a]["decisionTable"]["input"]["inputExpression"]["text"] not in Globals.output:
+                        recursive_output_function(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"]["inputExpression"]["text"])
 
 
 def recursive_output_function(oname):
@@ -412,18 +409,14 @@ def recursive_output_function(oname):
 
     for p in range(len(jsonvar["definitions"]["decision"])):
         if jsonvar["definitions"]["decision"][p]["decisionTable"]["output"]["@name"] == oname:
-            if oname in Globals.oilist:
-                try:
-                    for n in range(len(jsonvar["definitions"]["decision"][p]["decisionTable"]["input"])):
-                        if jsonvar["definitions"]["decision"][p]["decisionTable"]["input"][n]["inputExpression"]["text"] in Globals.oilist\
-                                and jsonvar["definitions"]["decision"][p]["decisionTable"]["input"][n]["inputExpression"]["text"] not in Globals.output:
-                            recursive_output_function(jsonvar["definitions"]["decision"][p]["decisionTable"]["input"][n]["inputExpression"]["text"])
-                        elif jsonvar["definitions"]["decision"][p]["decisionTable"]["output"]["@name"] not in Globals.output:
-                            Globals.output.append(jsonvar["definitions"]["decision"][p]["decisionTable"]["output"]["@name"])
-                except:
-                    if jsonvar["definitions"]["decision"][p]["decisionTable"]["input"]["inputExpression"]["text"] in Globals.oilist \
-                            and jsonvar["definitions"]["decision"][p]["decisionTable"]["input"]["inputExpression"]["text"] not in Globals.output:
-                        recursive_output_function(jsonvar["definitions"]["decision"][p]["decisionTable"]["input"]["inputExpression"]["text"])
-                    elif jsonvar["definitions"]["decision"][p]["decisionTable"]["output"]["@name"] not in Globals.output:
-                        Globals.output.append(jsonvar["definitions"]["decision"][p]["decisionTable"]["output"]["@name"])
+            Globals.output.append(oname)
+            try:
+                for n in range(len(jsonvar["definitions"]["decision"][p]["decisionTable"]["input"])):
+                    if jsonvar["definitions"]["decision"][p]["decisionTable"]["input"][n]["inputExpression"]["text"] in Globals.oilist\
+                            and jsonvar["definitions"]["decision"][p]["decisionTable"]["input"][n]["inputExpression"]["text"] not in Globals.output:
+                        recursive_output_function(jsonvar["definitions"]["decision"][p]["decisionTable"]["input"][n]["inputExpression"]["text"])
+            except:
+                if jsonvar["definitions"]["decision"][p]["decisionTable"]["input"]["inputExpression"]["text"] in Globals.oilist \
+                        and jsonvar["definitions"]["decision"][p]["decisionTable"]["input"]["inputExpression"]["text"] not in Globals.output:
+                    recursive_output_function(jsonvar["definitions"]["decision"][p]["decisionTable"]["input"]["inputExpression"]["text"])
 
