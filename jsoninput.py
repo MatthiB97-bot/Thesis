@@ -14,8 +14,8 @@ def execute_dmn():
         Globals.jsoninput = {"variables": Globals.d}
     except:
         Globals.jsoninput = {"variables": Globals.d}
-
     print(Globals.jsoninput)
+
     for p in range(len(Globals.output)):
         url = "http://localhost:8080/engine-rest/decision-definition/key/"+str(xr.read_decision_key(Globals.output[p]))+"/evaluate"
         headers = {'Content-Type': 'application/json'}
@@ -40,6 +40,7 @@ def execute_dmn():
         a = str(lst)
     Globals.d.clear()
     Globals.jsoninput.clear()
+    show_executed_rules()
     return a.replace("'", "").replace(",", "\n").strip('['']')
 
 
@@ -49,3 +50,18 @@ def deploy_dmn(name):
     payload = {}
     files = [('upload', (name + '.dmn', open('C:/Users/willi/PycharmProjects/pythonProject/'+name+'.dmn', 'rb'), 'application/octet-stream'))]
     requests.request("POST", url, data=payload, files=files)
+
+
+def show_executed_rules():
+    url = "http://localhost:8080/engine-rest/history/decision-instance?includeOutputs=true&sortBy=evaluationTime&sortOrder=desc&maxResults=25"
+    response = requests.request("GET", url)
+    my_json = json.loads(response.text)
+    keys = []
+    for k in range(len(Globals.output)):
+        keys.append(xr.read_decision_key(Globals.output[k]))
+
+    for i in range(0, 25):
+        if my_json[i]["decisionDefinitionKey"] in keys and my_json[i]["outputs"][0]["ruleId"] not in Globals.lst:
+            Globals.lst.append(my_json[i]["outputs"][0]["ruleId"])
+
+    xr.read_decision_rules()

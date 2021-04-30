@@ -32,7 +32,7 @@ def ready_responses():
             X.read_input_values(Globals.a)
         except:
             pass
-        return "Provide " + str(Globals.mylabels[0]) + " with an input value, considering this date format YYYY-MM-DDThh:mm:ss.\ne.g. 2001-09-11T08:46:12"
+        return "Provide " + str(Globals.mylabels[0]) + " with an input value, considering this date format YYYY-MM-DDThh:mm:ss.\ne.g. 2023-06-11T08:46:12"
     try:
         X.read_input_values(0)
         return "Provide " + str(Globals.mylabels[0]) + " with an input value."
@@ -78,7 +78,7 @@ def input_response(input):
                 X.read_input_values(Globals.a)
             except:
                 pass
-            return "Provide " + str(Globals.mylabels[Globals.a]) + " with an input value, considering this date format YYYY-MM-DDThh:mm:ss.\ne.g. 2001-09-11T08:46:12"
+            return "Provide " + str(Globals.mylabels[Globals.a]) + " with an input value, considering this date format YYYY-MM-DDThh:mm:ss.\ne.g. 2023-06-11T08:46:12"
 
         if Globals.a < len(Globals.myList):
             Globals.a = Globals.a + 1

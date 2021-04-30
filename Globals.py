@@ -17,6 +17,7 @@ output = []
 oilist = []
 inputbuttons = []
 varinput = []
+lst =[]
 a = 0
 q = 0
 w = -1

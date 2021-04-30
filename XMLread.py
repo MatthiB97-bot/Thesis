@@ -262,7 +262,6 @@ def subread_xml():
     with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
         jsonvar = json.loads(json.dumps(obj))
-
     Globals.myList.clear()
     Globals.mylabels.clear()
 
@@ -376,6 +375,33 @@ def read_decision_key(keyname):
         for a in range(len(jsonvar["definitions"]["decision"])):
             if jsonvar["definitions"]["decision"][a]["decisionTable"]["output"]["@name"] == keyname:
                 return jsonvar["definitions"]["decision"][a]["@id"]
+
+
+def read_decision_rules():
+    with open(Globals.model, 'r') as myfile:
+        obj = xmltodict.parse(myfile.read())
+        jsonvar = json.loads(json.dumps(obj))
+
+    rules = []
+    try:  # multiple decisions
+        for i in range(len(jsonvar["definitions"]["decision"])):
+            print("ok")
+            try:  # multiple rules
+                for j in range(len(jsonvar["definitions"]["decision"][i]["rule"])):
+                    if jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"][j]["@id"] in Globals.lst:
+                        rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"][j])
+            except:  # one rule
+                if jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"]["@id"] in Globals.lst:
+                    rules.append([jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"]])
+    except:  # one decision
+        try:  # multiple rules
+            for j in range(len(jsonvar["definitions"]["decision"]["rule"])):
+                if jsonvar["definitions"]["decision"]["decisionTable"]["rule"][j]["@id"] in Globals.lst:
+                    rules.append([jsonvar["definitions"]["decision"]["decisionTable"]["rule"][j]])
+        except:  # one rule
+            if jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["@id"] in Globals.lst:
+                rules.append([jsonvar["definitions"]["decision"]["decisionTable"]["rule"]])
+    print(rules)
 
 
 def readoutput():

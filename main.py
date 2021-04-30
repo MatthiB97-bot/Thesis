@@ -40,7 +40,7 @@ def predefbuttons(update, context, wadagewilt):
 
 def help(update, context):
     """Send a message when the command /help is issued."""
-    update.message.reply_text('- you can scroll to view all buttons\n-------------------------------------\nTo go back to the DMN chatbot press /start')
+    update.message.reply_text('- you can scroll to view all buttons\n- https://telegram.org/faq\n-------------------------------------\nTo go back to the DMN chatbot press /start')
 
 
 def handle_message(update, context):
