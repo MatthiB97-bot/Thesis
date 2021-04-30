@@ -57,11 +57,12 @@ def show_executed_rules():
     response = requests.request("GET", url)
     my_json = json.loads(response.text)
     keys = []
+
     for k in range(len(Globals.output)):
         keys.append(xr.read_decision_key(Globals.output[k]))
 
     for i in range(0, 25):
-        if my_json[i]["decisionDefinitionKey"] in keys and my_json[i]["outputs"][0]["ruleId"] not in Globals.lst:
+        if my_json[i]["decisionDefinitionKey"] in keys and my_json[i]["outputs"][0]["ruleId"] not in Globals.lst and len(Globals.lst) <= len(keys)-1:
             Globals.lst.append(my_json[i]["outputs"][0]["ruleId"])
 
     xr.read_decision_rules()

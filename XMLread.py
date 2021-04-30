@@ -381,27 +381,79 @@ def read_decision_rules():
     with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
         jsonvar = json.loads(json.dumps(obj))
-
+    total = []
     rules = []
     try:  # multiple decisions
         for i in range(len(jsonvar["definitions"]["decision"])):
-            print("ok")
             try:  # multiple rules
-                for j in range(len(jsonvar["definitions"]["decision"][i]["rule"])):
-                    if jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"][j]["@id"] in Globals.lst:
-                        rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"][j])
+                for j in range(len(jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"])):
+                    try:  # multiple inputentries
+                        if jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"][j]["@id"] in Globals.lst:
+                            for k in range(len(jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"][j]["inputEntry"])):
+                                rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["input"][k]["inputExpression"]["text"])
+                                rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"][j]["inputEntry"][k]["text"])
+                            rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["output"]["@name"])
+                            rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"][j]["outputEntry"]["text"])
+                            total.append(rules)
+                    except:  # one inputentry
+                        if jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"][j]["@id"] in Globals.lst:
+                            rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["input"]["inputExpression"]["text"])
+                            rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"][j]["inputEntry"]["text"])
+                            rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["output"]["@name"])
+                            rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"][j]["outputEntry"]["text"])
+                            total.append(rules)
             except:  # one rule
-                if jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"]["@id"] in Globals.lst:
-                    rules.append([jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"]])
+                try:  # multiple inputentries
+                    if jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"]["@id"] in Globals.lst:
+                        for k in range(len(jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"]["inputEntry"])):
+                            rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["input"][k]["inputExpression"]["text"])
+                            rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"]["inputEntry"][k]["text"])
+                        rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["output"]["@name"])
+                        rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"]["outputEntry"]["text"])
+                        total.append(rules)
+                except:  # one inputentry
+                    if jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"]["@id"] in Globals.lst:
+                        rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["input"]["inputExpression"]["text"])
+                        rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"]["inputEntry"]["text"])
+                        rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["output"]["@name"])
+                        rules.append(jsonvar["definitions"]["decision"][i]["decisionTable"]["rule"]["outputEntry"]["text"])
+                        total.append(rules)
+            rules = []
     except:  # one decision
         try:  # multiple rules
-            for j in range(len(jsonvar["definitions"]["decision"]["rule"])):
-                if jsonvar["definitions"]["decision"]["decisionTable"]["rule"][j]["@id"] in Globals.lst:
-                    rules.append([jsonvar["definitions"]["decision"]["decisionTable"]["rule"][j]])
+            for j in range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"])):
+                try:  # multiple inputentries
+                    if jsonvar["definitions"]["decision"]["decisionTable"]["rule"][j]["@id"] in Globals.lst:
+                        for k in range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][j]["inputEntry"])):
+                            rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["input"][k]["inputExpression"]["text"])
+                            rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][j]["inputEntry"][k]["text"])
+                        rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["output"]["@name"])
+                        rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][j]["outputEntry"]["text"])
+                        total.append(rules)
+                except:  # one inputentry
+                    if jsonvar["definitions"]["decision"]["decisionTable"]["rule"][j]["@id"] in Globals.lst:
+                        rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["input"]["inputExpression"]["text"])
+                        rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][j]["inputEntry"]["text"])
+                        rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["output"]["@name"])
+                        rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][j]["outputEntry"]["text"])
+                        total.append(rules)
         except:  # one rule
-            if jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["@id"] in Globals.lst:
-                rules.append([jsonvar["definitions"]["decision"]["decisionTable"]["rule"]])
-    print(rules)
+            try:  # multiple inputentries
+                if jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["@id"] in Globals.lst:
+                    for k in range(len(jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["inputEntry"])):
+                        rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["input"][k]["inputExpression"]["text"])
+                        rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["inputEntry"][k]["text"])
+                    rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["output"]["@name"])
+                    rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["outputEntry"]["text"])
+                    total.append(rules)
+            except:  # one inputentry
+                if jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["@id"] in Globals.lst:
+                    rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["input"]["inputExpression"]["text"])
+                    rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["inputEntry"]["text"])
+                    rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["output"]["@name"])
+                    rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["outputEntry"]["text"])
+                    total.append(rules)
+    print(total)
 
 
 def readoutput():
