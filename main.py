@@ -64,6 +64,9 @@ def handle_message(update, context):
                 Globals.w = -1
                 Globals.counter = 0
                 update.message.reply_text("To upload your own DMN model press the attach button. Notice, the file format has to be .dmn.")
+            elif text in "Show executed rules":
+                response = jsoninput.show_executed_rules()
+                predefbuttons(update, context, response)
             elif text in "I want to execute a predefined DMN model":
                 Globals.w = -1
                 Globals.counter = 0

@@ -40,7 +40,6 @@ def execute_dmn():
         a = str(lst)
     Globals.d.clear()
     Globals.jsoninput.clear()
-    show_executed_rules()
     return a.replace("'", "").replace(",", "\n").strip('['']')
 
 
@@ -66,3 +65,40 @@ def show_executed_rules():
             Globals.lst.append(my_json[i]["outputs"][0]["ruleId"])
 
     xr.read_decision_rules()
+
+    var = []
+    values = []
+    text = []
+    try:  # multiple rules
+        for x in range(len(Globals.Globaltotal)):
+            for k in range(len(Globals.Globaltotal[x])):
+                if Globals.Globaltotal[x][k] is None:
+                    Globals.Globaltotal[x][k] = "Unspecified"
+                if k%2 == 0:
+                    var.append(Globals.Globaltotal[x][k])
+                else:
+                    values.append(Globals.Globaltotal[x][k])
+            text.append("Rule " + str(x)+":")
+            for a in range(len(var)-1):
+                text.append("If " + var[a] + " is " + values[a])
+            text.append("Then the output for " + str(var.pop()) + " is " + str(values.pop()) + ",")
+            var = []
+            values = []
+    except:  # one rule
+        for k in range(len(Globals.Globaltotal)):
+            if Globals.Globaltotal[k] is None:
+                Globals.Globaltotal[k] = "Unspecified"
+            if k % 2 == 0:
+                var.append(Globals.Globaltotal[k])
+            else:
+                values.append(Globals.Globaltotal[k])
+        text.append("Rule 0" + ":")
+        for a in range(len(var) - 1):
+            text.append("If " + var[a] + " is " + values[a])
+        text.append("Then the output for " + str(var.pop()) + " is " + str(values.pop()) + ",")
+        var = []
+        values = []
+
+    n = str(text)
+
+    return n.replace("'", "").replace(",", "\n").strip('['']')

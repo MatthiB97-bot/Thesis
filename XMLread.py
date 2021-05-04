@@ -453,7 +453,7 @@ def read_decision_rules():
                     rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["output"]["@name"])
                     rules.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["outputEntry"]["text"])
                     total.append(rules)
-    print(total)
+    Globals.Globaltotal = total
 
 
 def readoutput():

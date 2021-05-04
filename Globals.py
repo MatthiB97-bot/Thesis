@@ -18,6 +18,7 @@ oilist = []
 inputbuttons = []
 varinput = []
 lst =[]
+Globaltotal = []
 a = 0
 q = 0
 w = -1

@@ -23,7 +23,7 @@ def ready_responses():
         X.same_values(Globals.output[i])
 
     if len(Globals.myList) == 0:
-        Globals.inputbuttons = [["Again"], ["Choose another existing DMN model"], ["Upload your own DMN model"], ["End the conversation"]]
+        Globals.inputbuttons = [["Again"], ["Show executed rules"], ["Choose another existing DMN model"], ["Upload your own DMN model"], ["End the conversation"]]
         return JS.execute_dmn()
     Globals.q = 0
     Globals.a = 0
@@ -69,7 +69,7 @@ def input_response(input):
 
         if len(Globals.myList) != 0 and len(Globals.myList) == len(Globals.input):
             Globals.a = 0
-            Globals.inputbuttons = [["Again"], ["Choose another existing DMN model"], ["Upload your own DMN model"], ["End the conversation"]]
+            Globals.inputbuttons = [["Again"],["Show executed rules"], ["Choose another existing DMN model"], ["Upload your own DMN model"], ["End the conversation"]]
             return JS.execute_dmn()
 
         if X.read_input_types(Globals.a+1) == "date":
