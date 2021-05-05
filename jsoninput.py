@@ -23,6 +23,9 @@ def execute_dmn():
         try:
             m.append(response.json()[0][str(Globals.output[p])]["value"])
         except:
+            Globals.d.clear()
+            Globals.jsoninput.clear()
+            Globals.inputbuttons.remove(["Show executed rules"])
             return "Unfortunately, I can't make a decision based on your input. If you want to try again, send me 'again'."
 
 
