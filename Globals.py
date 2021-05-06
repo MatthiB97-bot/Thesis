@@ -1,5 +1,5 @@
-dmnmodels = [['BMILevel'], ['datetest'],['daydrinking'], ['dinnerDecisions'], ['DogLicense'], ['InsuranceClaim'], ['multiplelayers'],
-             ["onedtonerule"], ["ski guide"], ["testdmn"], ["simple"], ['sixdec']]
+dmnmodels = [['BMILevel'], ['datetest'], ['dinnerDecisions'], ['DogLicense'], ['InsuranceClaim'], ['multiplelayers'],
+             ["onedtonerule"], ["ski guide"], ["testdmn"], ["simple"], ['sixdec'], ['deploycheck']]
 model = ""
 buttonstext = ""
 deployname = ""

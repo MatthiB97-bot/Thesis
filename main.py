@@ -28,14 +28,14 @@ def restart(update, context):
     update.message.reply_text('Which decision would you want to make now?', reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
 
 
-def predefbuttons(update, context, wadagewilt):
+def predefbuttons(update, context, text):
     k = Globals.inputbuttons
     if len(Globals.inputbuttons) != 0:
-        choice = update.message.reply_text(wadagewilt,
+        choice = update.message.reply_text(text,
             reply_markup=ReplyKeyboardMarkup(k, one_time_keyboard=True, resize_keyboard=True))
         return choice
     else:
-        return update.message.reply_text(wadagewilt)
+        return update.message.reply_text(text)
 
 
 def help(update, context):
