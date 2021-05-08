@@ -5,6 +5,7 @@ import distutils
 import distutils.util
 import Globals
 import jsoninput
+import NLPmodule as NLP
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 # Enable logging
@@ -23,7 +24,6 @@ def start(update, context):
 
 
 def restart(update, context):
-    """Send a message when the command /start is issued."""
     Globals.model = ""
     update.message.reply_text('Which decision would you want to make now?', reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
 
@@ -44,6 +44,15 @@ def help(update, context):
 
 
 def handle_message(update, context):
+    if NLP.gettopintent(update.message.text) == "BackIntent" and NLP.gettopintentscore(update.message.text) > 0.8:
+        update.message.text = "back"
+    elif NLP.gettopintent(update.message.text) == "EndIntent" and NLP.gettopintentscore(update.message.text) > 0.8:
+        update.message.text = "End the conversation"
+    elif NLP.gettopintent(update.message.text) == "StartIntent" and NLP.gettopintentscore(update.message.text) > 0.8:
+        update.message.text = "start"
+    elif NLP.gettopintent(update.message.text) == "HelpIntent" and NLP.gettopintentscore(update.message.text) > 0.8:
+        update.message.text = "help"
+
     if update.message.text.isdigit():
         text = int(update.message.text)
         response = R.input_response(text)
@@ -94,6 +103,10 @@ def handle_message(update, context):
                 text = bool(distutils.util.strtobool(text))
                 response = R.input_response(text)
                 predefbuttons(update, context, response)
+            elif text in "start":
+                start(update, context)
+            elif text in "help":
+                help(update, context)
             else:
                 response = R.input_response(text)
                 predefbuttons(update, context, response)
