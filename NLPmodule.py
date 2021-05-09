@@ -27,4 +27,4 @@ def extractnumber(text):
     response = requests.request("GET", url)
     my_json = json.loads(response.text)
     number = my_json["prediction"]["entities"]["number"]
-    return number
+    return number[0]
