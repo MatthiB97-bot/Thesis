@@ -67,6 +67,11 @@ def input_response(input):
             Globals.inputbuttons = [["Again"], ["Show executed rules"], ["Choose another existing DMN model"], ["Upload your own DMN model"], ["End the conversation"]]
             return JS.execute_dmn()
 
+        if X.read_input_types(Globals.a) == "date":
+            if "-" not in input:
+                Globals.q = Globals.q - 1
+                Globals.input.pop()
+                return "Make sure the date is as specific as possible. Month and day are mandatory values."
 
         if Globals.a < len(Globals.myList):
             Globals.a = Globals.a + 1

@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 def start(update, context):
     """Send a message when the command /start is issued."""
     Globals.model = ""
-    update.message.reply_text("Hi, I am the DMN chatbot. How can I help you today?\nIn case you have any questions, send /help", reply_markup=ReplyKeyboardMarkup([["I want to execute a predefined DMN model"], ["I want to upload a new DMN model"]], one_time_keyboard=True, resize_keyboard=True))
+    update.message.reply_text("Hi, I am the DMN chatbot. How can I help you today?\nIn case you have any questions, send 'help'.", reply_markup=ReplyKeyboardMarkup([["I want to execute a predefined DMN model"], ["I want to upload a new DMN model"]], one_time_keyboard=True, resize_keyboard=True))
 
 
 def restart(update, context):
@@ -40,27 +40,34 @@ def predefbuttons(update, context, text):
 
 def help(update, context):
     """Send a message when the command /help is issued."""
-    update.message.reply_text('- you can scroll to view all buttons\n- https://telegram.org/faq\n-------------------------------------\nTo go back to the DMN chatbot press /start')
+    update.message.reply_text("Step-by-step plan of having a conversation with the DMN chatbot:\n\n"
+                              "1. To start a conversation with me, send 'hi'.\n2. Press the right button to either "
+                              "choose or upload a model.\n3. If you decide to execute a predefined model, choose the "
+                              "decision model you want to execute.\n4. If you decide to upload your own DMN model, "
+                              "upload a .dmn file.\n5. Choose which decision you want to execute.\n6. Enter all"
+                              "necessary inputs.\n7. After the execution of the decision, choose what you want to"
+                              "do next from the list.")
 
 
 def handle_message(update, context):
+    NLP.sendquery(update.message.text)
     try:
-        a = NLP.extractdate(update.message.text)
+        a = NLP.extractdate()
         update.message.text = str(a)
     except:
         try:
-            a = NLP.extractnumber(update.message.text)
+            a = NLP.extractnumber()
             update.message.text = str(a)
         except:
             pass
 
-    if NLP.gettopintent(update.message.text) == "BackIntent" and NLP.gettopintentscore(update.message.text) > 0.8:
+    if NLP.gettopintent() == "BackIntent" and NLP.gettopintentscore() > 0.8:
         update.message.text = "back"
-    elif NLP.gettopintent(update.message.text) == "EndIntent" and NLP.gettopintentscore(update.message.text) > 0.8:
+    elif NLP.gettopintent() == "EndIntent" and NLP.gettopintentscore() > 0.8:
         update.message.text = "End the conversation"
-    elif NLP.gettopintent(update.message.text) == "StartIntent" and NLP.gettopintentscore(update.message.text) > 0.8:
+    elif NLP.gettopintent() == "StartIntent" and NLP.gettopintentscore() > 0.8:
         update.message.text = "start"
-    elif NLP.gettopintent(update.message.text) == "HelpIntent" and NLP.gettopintentscore(update.message.text) > 0.8:
+    elif NLP.gettopintent() == "HelpIntent" and NLP.gettopintentscore() > 0.8:
         update.message.text = "help"
 
     if update.message.text.isdigit():
@@ -118,25 +125,31 @@ def handle_message(update, context):
             elif text in "help":
                 help(update, context)
             else:
-                response = R.input_response(text)
-                predefbuttons(update, context, response)
+                try:
+                    response = R.input_response(text)
+                    predefbuttons(update, context, response)
+                except:
+                    update.message.reply_text("I don't know what you mean by that. If you need help, don't be afraid to ask.")
 
 
 def downloader(update, context):
-    Globals.deployname = str(update.message.document["file_name"]).removesuffix(".dmn")
-    if [Globals.deployname] in Globals.dmnmodels:
-        update.message.reply_text("I'm sorry, there already exists a DMN model with this name. You can choose this model from the list or rename your file and try to upload it again.", reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
+    if ".dmn" in update.message.document["file_name"]:
+        Globals.deployname = str(update.message.document["file_name"]).removesuffix(".dmn")
+        if [Globals.deployname] in Globals.dmnmodels:
+            update.message.reply_text("I'm sorry, there already exists a DMN model with this name. You can choose this model from the list or rename your file and try to upload it again.", reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
+        else:
+            Globals.dmnmodels.append([Globals.deployname])
+            with open("C:/Users/willi/PycharmProjects/pythonProject/"+Globals.deployname+".dmn", 'wb') as f:
+                context.bot.get_file(update.message.document).download(out=f)
+            with open("C:/Users/willi/PycharmProjects/pythonProject/"+Globals.deployname+".xml", 'wb') as f:
+                context.bot.get_file(update.message.document).download(out=f)
+            Globals.model = ""
+            Globals.model = Globals.deployname+".xml"
+            jsoninput.deploy_dmn(Globals.deployname)
+            response = R.subdecision_response()
+            predefbuttons(update, context, response)
     else:
-        Globals.dmnmodels.append([Globals.deployname])
-        with open("C:/Users/willi/PycharmProjects/pythonProject/"+Globals.deployname+".dmn", 'wb') as f:
-            context.bot.get_file(update.message.document).download(out=f)
-        with open("C:/Users/willi/PycharmProjects/pythonProject/"+Globals.deployname+".xml", 'wb') as f:
-            context.bot.get_file(update.message.document).download(out=f)
-        Globals.model = ""
-        Globals.model = Globals.deployname+".xml"
-        jsoninput.deploy_dmn(Globals.deployname)
-        response = R.subdecision_response()
-        predefbuttons(update, context, response)
+        update.message.reply_text("Please make sure the document is a DMN file.")
 
 
 def error(update, context):

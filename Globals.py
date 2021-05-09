@@ -25,3 +25,4 @@ w = -1
 d = {}
 jsoninput = {}
 typedict = {"integer": int, "string": str, "boolean": bool, "long": int, "double": float, "date": str}
+jsonobject = {}
