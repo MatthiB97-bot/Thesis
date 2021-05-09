@@ -5,6 +5,7 @@ import distutils
 import distutils.util
 import Globals
 import jsoninput
+import XMLread as X
 import NLPmodule as NLP
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
@@ -20,7 +21,7 @@ logger = logging.getLogger(__name__)
 def start(update, context):
     """Send a message when the command /start is issued."""
     Globals.model = ""
-    update.message.reply_text("Hi, I am the DMN chatbot. How can I help you today?\nIn case you have any questions, send 'help'.", reply_markup=ReplyKeyboardMarkup([["I want to execute a predefined DMN model"], ["I want to upload a new DMN model"]], one_time_keyboard=True, resize_keyboard=True))
+    update.message.reply_text("Hi, I am the DMN chatbot. How can I help you today?\nIn case you have any questions, just ask for help.", reply_markup=ReplyKeyboardMarkup([["I want to execute a predefined DMN model"], ["I want to upload a new DMN model"]], one_time_keyboard=True, resize_keyboard=True))
 
 
 def restart(update, context):
@@ -51,15 +52,19 @@ def help(update, context):
 
 def handle_message(update, context):
     NLP.sendquery(update.message.text)
+
     try:
-        a = NLP.extractdate()
-        update.message.text = str(a)
-    except:
-        try:
-            a = NLP.extractnumber()
+        if X.read_input_types(Globals.a) == 'date':
+            a = NLP.extractdate()
             update.message.text = str(a)
-        except:
-            pass
+        else:
+            try:
+                a = NLP.extractnumber()
+                update.message.text = str(a)
+            except:
+                pass
+    except:
+        pass
 
     if NLP.gettopintent() == "BackIntent" and NLP.gettopintentscore() > 0.8:
         update.message.text = "back"

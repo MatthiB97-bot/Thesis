@@ -24,7 +24,7 @@ def same_values(decision):
                     sameval.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][m]["inputEntry"]["text"])
                 if len(sameval) != 0:
                     for i in sameval:  # check if all values are the same
-                        if i == sameval[0]:
+                        if i == sameval[0] and i is not None:
                             a = a + 1
                     if len(sameval) == a and jsonvar["definitions"]["decision"]["decisionTable"]["input"]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
                         Globals.d[str(Globals.myList[0])] = {}
@@ -38,7 +38,7 @@ def same_values(decision):
                         sameval.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"][m]["inputEntry"][k]["text"])
                     if len(sameval) != 0:
                         for i in sameval:  # check if all values are the same
-                            if i == sameval[0]:
+                            if i == sameval[0] and i is not None:
                                 a = a + 1
                         if len(sameval) == a and jsonvar["definitions"]["decision"]["decisionTable"]["input"][k]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
                             Globals.d[str(Globals.myList[k])] = {}
@@ -50,7 +50,7 @@ def same_values(decision):
                 sameval.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["inputEntry"]["text"])
                 if len(sameval) != 0:
                     for i in sameval:  # check if all values are the same
-                        if i == sameval[0]:
+                        if i == sameval[0] and i is not None:
                             a = a + 1
                     if len(sameval) == a and \
                             jsonvar["definitions"]["decision"]["decisionTable"]["input"]["inputExpression"][
@@ -66,7 +66,7 @@ def same_values(decision):
                     sameval.append(jsonvar["definitions"]["decision"]["decisionTable"]["rule"]["inputEntry"][k]["text"])
                     if len(sameval) != 0:
                         for i in sameval:
-                            if i == sameval[0]:
+                            if i == sameval[0] and i is not None:
                                 a = a + 1
                         if len(sameval) == a and jsonvar["definitions"]["decision"]["decisionTable"]["input"][k]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
                             Globals.d[str(Globals.myList[k])] = {}
@@ -111,7 +111,7 @@ def same_values(decision):
                                     sameval.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][m]["inputEntry"][k]["text"])
                                 if len(sameval) != 0:
                                     for i in sameval:
-                                        if i == sameval[0]:
+                                        if i == sameval[0] and i is not None:
                                             a = a + 1
                                         if len(sameval) == a and jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
                                             Globals.d[str(Globals.myList[Globals.w])] = {}
@@ -129,7 +129,7 @@ def same_values(decision):
 
                                 if len(sameval) != 0:
                                     for i in sameval:
-                                        if i == sameval[0]:
+                                        if i == sameval[0] and i is not None:
                                             a = a + 1
                                         if len(sameval) == a and jsonvar["definitions"]["decision"][n]["decisionTable"]["input"][k]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
                                             Globals.d[str(Globals.myList[Globals.w])] = {}
@@ -148,7 +148,7 @@ def same_values(decision):
                                     sameval.append(jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"][m]["inputEntry"]["text"])
                                 if len(sameval) != 0:
                                     for i in sameval:
-                                        if i == sameval[0]:
+                                        if i == sameval[0] and i is not None:
                                             a = a + 1
                                         if len(sameval) == a and jsonvar["definitions"]["decision"][n]["decisionTable"]["input"]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
                                             Globals.d[str(Globals.myList[Globals.w])] = {}
@@ -166,13 +166,12 @@ def same_values(decision):
 
                                 if len(sameval) != 0:
                                     for i in sameval:
-                                        if i == sameval[0]:
+                                        if i == sameval[0] and i is not None:
                                             a = a + 1
                                         if len(sameval) == a and jsonvar["definitions"]["decision"][n]["decisionTable"]["input"]["inputExpression"]["@typeRef"] not in ["double", "integer"]:
                                             Globals.d[str(Globals.myList[Globals.w])] = {}
                                             Globals.d[str(Globals.myList[Globals.w])]["value"] = jsonvar["definitions"]["decision"][n]["decisionTable"]["rule"]["inputEntry"]["text"].strip('"')
                                             remlist.append(Globals.w)
-
 
         if len(remlist) != 0:
             for b in sorted(remlist, reverse=True):

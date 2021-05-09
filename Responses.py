@@ -18,7 +18,6 @@ def ready_responses():
     X.subread_xml()
     X.readoutput()
 
-
     for i in range(len(Globals.output)):
         X.same_values(Globals.output[i])
 
@@ -36,6 +35,9 @@ def ready_responses():
 
 
 def input_response(input):
+    if Globals.model == "":
+        return "Please make sure the document is a DMN file."
+
     if X.read_input_types(Globals.q) == "double":
         try:
             input = float(input)
@@ -44,14 +46,18 @@ def input_response(input):
 
     if [input] not in Globals.dmnmodels:
         if input in ("Back", "back", "BACK"):
-            Globals.a = Globals.a - 1
-            Globals.q = Globals.q - 1
-            Globals.input.pop()
-            try:
-                X.read_input_values(Globals.a)
-            except:
-                pass
-            return "Provide " + str(Globals.mylabels[Globals.a]) + " with an input value."
+            if len(Globals.input) >= 1:
+                Globals.a = Globals.a - 1
+                Globals.q = Globals.q - 1
+                Globals.input.pop()
+                try:
+                    X.read_input_values(Globals.a)
+                except:
+                    pass
+                return "Provide " + str(Globals.mylabels[Globals.a]) + " with an input value."
+            else:
+                return "You can't go back any further. Provide " + str(Globals.mylabels[Globals.a]) + " with an input value."
+
         if type(input) == Globals.typedict[X.read_input_types(Globals.q)]: #check if type of input is correct type
             Globals.input.append(input)
             Globals.q = Globals.q + 1

@@ -26,7 +26,7 @@ def execute_dmn():
             Globals.d.clear()
             Globals.jsoninput.clear()
             Globals.inputbuttons.remove(["Show executed rules"])
-            return "Unfortunately, I can't make a decision based on your input. If you want to try again, send me 'again'."
+            return "Unfortunately, I couldn't make a decision based on your input. If you want to try again, send me 'again'."
 
 
     lst = []
@@ -55,17 +55,19 @@ def deploy_dmn(name):
 
 
 def show_executed_rules():
-    url = "http://localhost:8080/engine-rest/history/decision-instance?includeOutputs=true&sortBy=evaluationTime&sortOrder=desc&maxResults=25"
+    Globals.lst = []
+    url = "http://localhost:8080/engine-rest/history/decision-instance?includeOutputs=true&sortBy=evaluationTime&sortOrder=desc&maxResults=1000"
     response = requests.request("GET", url)
     my_json = json.loads(response.text)
+
     keys = []
 
     for k in range(len(Globals.output)):
         keys.append(xr.read_decision_key(Globals.output[k]))
 
-    for i in range(0, 25):
-        if my_json[i]["decisionDefinitionKey"] in keys and my_json[i]["outputs"][0]["ruleId"] not in Globals.lst and len(Globals.lst) <= len(keys)-1:
-            Globals.lst.append(my_json[i]["outputs"][0]["ruleId"])
+    for k in range(0, 100):
+        if my_json[k]["decisionDefinitionKey"] in keys and my_json[k]["outputs"][0]["ruleId"] not in Globals.lst and len(Globals.lst) <= (len(keys)-1):
+            Globals.lst.append(my_json[k]["outputs"][0]["ruleId"])
 
     xr.read_decision_rules()
 
