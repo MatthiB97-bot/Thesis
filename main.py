@@ -45,10 +45,14 @@ def help(update, context):
 
 def handle_message(update, context):
     try:
-        a = NLP.extractnumber(update.message.text)
+        a = NLP.extractdate(update.message.text)
         update.message.text = str(a)
     except:
-        pass
+        try:
+            a = NLP.extractnumber(update.message.text)
+            update.message.text = str(a)
+        except:
+            pass
 
     if NLP.gettopintent(update.message.text) == "BackIntent" and NLP.gettopintentscore(update.message.text) > 0.8:
         update.message.text = "back"

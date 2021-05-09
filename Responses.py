@@ -27,12 +27,7 @@ def ready_responses():
         return JS.execute_dmn()
     Globals.q = 0
     Globals.a = 0
-    if X.read_input_types(0) == "date":
-        try:
-            X.read_input_values(Globals.a)
-        except:
-            pass
-        return "Provide " + str(Globals.mylabels[0]) + " with an input value, considering this date format YYYY-MM-DDThh:mm:ss.\ne.g. 2023-06-11T08:46:12"
+
     try:
         X.read_input_values(0)
         return "Provide " + str(Globals.mylabels[0]) + " with an input value."
@@ -72,13 +67,6 @@ def input_response(input):
             Globals.inputbuttons = [["Again"], ["Show executed rules"], ["Choose another existing DMN model"], ["Upload your own DMN model"], ["End the conversation"]]
             return JS.execute_dmn()
 
-        if X.read_input_types(Globals.a+1) == "date":
-            Globals.a = Globals.a + 1
-            try:
-                X.read_input_values(Globals.a)
-            except:
-                pass
-            return "Provide " + str(Globals.mylabels[Globals.a]) + " with an input value, considering this date format YYYY-MM-DDThh:mm:ss.\ne.g. 2023-06-11T08:46:12"
 
         if Globals.a < len(Globals.myList):
             Globals.a = Globals.a + 1
