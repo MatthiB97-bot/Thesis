@@ -3,6 +3,7 @@ import XMLread as X
 import jsoninput as JS
 
 
+# This function creates list of buttons of all decisions present in the chosen DMN model
 def subdecision_response():
     X.read_decision_name()
 
@@ -13,6 +14,8 @@ def subdecision_response():
         return ready_responses()
 
 
+# This function asks for input values for the first input variable
+# This function triggers the execution of the decision in the camunda decision engine when all input are collected.
 def ready_responses():
     Globals.input.clear()
     X.subread_xml()
@@ -34,6 +37,8 @@ def ready_responses():
         return "Provide " + str(Globals.mylabels[0]) + " with an input value."
 
 
+# This function asks for input values for all input variables except the first (only difference with previous function)
+# This function triggers the execution of the decision in the camunda decision engine when all input are collected.
 def input_response(input):
     if Globals.model == "":
         return "Please make sure the document is a DMN file."

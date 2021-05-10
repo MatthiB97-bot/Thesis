@@ -7,7 +7,7 @@ import Globals
 import jsoninput
 import XMLread as X
 import NLPmodule as NLP
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, conversationhandler
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -18,17 +18,21 @@ logger = logging.getLogger(__name__)
 
 # Define a few command handlers. These usually take the two arguments update and
 # context. Error handlers also receive the raised TelegramError object in error.
+
+# sends a welcoming message whenever the function is triggered
 def start(update, context):
     """Send a message when the command /start is issued."""
     Globals.model = ""
     update.message.reply_text("Hi, I am the DMN chatbot. How can I help you today?\nIn case you have any questions, just ask for help.", reply_markup=ReplyKeyboardMarkup([["I want to execute a predefined DMN model"], ["I want to upload a new DMN model"]], one_time_keyboard=True, resize_keyboard=True))
 
 
+# running a new decision after the execution of a decision, this function sends a message asking which decision
 def restart(update, context):
     Globals.model = ""
     update.message.reply_text('Which decision would you want to make now?', reply_markup=ReplyKeyboardMarkup(Globals.dmnmodels, one_time_keyboard=True, resize_keyboard=True))
 
 
+# creates buttons in the Telegram app based on the Globals.inputbuttons list
 def predefbuttons(update, context, text):
     k = Globals.inputbuttons
     if len(Globals.inputbuttons) != 0:
@@ -39,6 +43,7 @@ def predefbuttons(update, context, text):
         return update.message.reply_text(text)
 
 
+# sends step-by-step plan to help the user if he/she needs any help
 def help(update, context):
     """Send a message when the command /help is issued."""
     update.message.reply_text("Step-by-step plan of having a conversation with the DMN chatbot:\n\n"
@@ -50,6 +55,7 @@ def help(update, context):
                               "do next from the list.")
 
 
+# this function handles all messages sent to the chatbot
 def handle_message(update, context):
     NLP.sendquery(update.message.text)
 
@@ -70,7 +76,8 @@ def handle_message(update, context):
         update.message.text = "back"
     elif NLP.gettopintent() == "EndIntent" and NLP.gettopintentscore() > 0.8:
         update.message.text = "End the conversation"
-    elif NLP.gettopintent() == "StartIntent" and NLP.gettopintentscore() > 0.8:
+    elif NLP.gettopintent() == "StartIntent" \
+            and NLP.gettopintentscore() > 0.8:
         update.message.text = "start"
     elif NLP.gettopintent() == "HelpIntent" and NLP.gettopintentscore() > 0.8:
         update.message.text = "help"
@@ -137,6 +144,7 @@ def handle_message(update, context):
                     update.message.reply_text("I don't know what you mean by that. If you need help, don't be afraid to ask.")
 
 
+# this function downloads dmn files uploaded by the user in order to execute the dmn model
 def downloader(update, context):
     if ".dmn" in update.message.document["file_name"]:
         Globals.deployname = str(update.message.document["file_name"]).removesuffix(".dmn")
@@ -157,11 +165,13 @@ def downloader(update, context):
         update.message.reply_text("Please make sure the document is a DMN file.")
 
 
+# this function prints all errors
 def error(update, context):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 
+# this function is executed when the code is ran
 def main():
     """Start the bot."""
     # Create the Updater and pass it your bots token.
@@ -171,8 +181,8 @@ def main():
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
     # on different commands - answer in Telegram
-    dp.add_handler(CommandHandler("start", start))
-    dp.add_handler(CommandHandler("help", help))
+    dp.add_handler(CommandHandler("start", start, run_async=True))
+    dp.add_handler(CommandHandler("help", help, run_async=True))
     dp.add_handler(MessageHandler(Filters.text, handle_message))
     dp.add_handler(MessageHandler(Filters.text, predefbuttons))
     dp.add_handler(MessageHandler(Filters.document, downloader))

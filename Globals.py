@@ -1,3 +1,4 @@
+# These are all global variables, used in different .py files
 dmnmodels = [['BMILevel'], ['datetest'], ['dinnerDecisions'], ['DogLicense'], ['InsuranceClaim'], ['multiplelayers'],
              ["onedtonerule"], ["ski guide"], ["testdmn"], ["simple"], ['sixdec'], ['deploycheck']]
 model = ""

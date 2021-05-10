@@ -1,8 +1,11 @@
 import xmltodict
 import json
 import Globals
+# all functions present in this file, somehow use the XML file of the selected DMN model.
 
 
+# This function automatically assigns a value for an input variable
+# if the value for that input variable is the same for all rules
 def same_values(decision):
     with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
@@ -186,6 +189,7 @@ def divide_chunks(l, n):
         yield l[i:i + n]
 
 
+# This function makes buttons if an input variable has predefined input values
 def read_input_values(integer):
     Globals.inputbuttons.clear()
     with open(Globals.model, 'r') as myfile:
@@ -233,6 +237,7 @@ def read_input_values(integer):
                 return jsonvar["definitions"]["decision"]["decisionTable"]["input"][integer]["inputValues"]["text"]
 
 
+# this function retrieves the input type of an input variable
 def read_input_types(integer):
     with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
@@ -257,6 +262,7 @@ def read_input_types(integer):
                     return jsonvar["definitions"]["decision"]["decisionTable"]["input"][b]["inputExpression"]["@typeRef"]
 
 
+# this function makes a list of all decisions that have to be executed in case the user wants to execute a subdecision
 def subread_xml():
     with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
@@ -294,6 +300,7 @@ def subread_xml():
                 Globals.mylabels.append(jsonvar["definitions"]["decision"]["decisionTable"]["input"][a]["@label"])
 
 
+# this function is used by the subread XML function
 def recursive_function(dname):
     with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
@@ -319,6 +326,7 @@ def recursive_function(dname):
                     recursive_function(jsonvar["definitions"]["decision"][p]["decisionTable"]["input"]["inputExpression"]["text"])
 
 
+# This function creates a list with all the names of the decisions in a DMN model
 def read_decision_name():
     Globals.decisionname.clear()
     Globals.notmyList.clear()
@@ -362,6 +370,7 @@ def read_decision_name():
         Globals.decisionname.append([jsonvar["definitions"]["decision"]["@name"]])
 
 
+# this function creates a list with all decision keys of all decisions present in a DMN model
 def read_decision_key(keyname):
     Globals.decisionname.clear()
     with open(Globals.model, 'r') as myfile:
@@ -376,6 +385,7 @@ def read_decision_key(keyname):
                 return jsonvar["definitions"]["decision"][a]["@id"]
 
 
+# This functions retrieves all decision rules present in an XML file
 def read_decision_rules():
     with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())
@@ -455,6 +465,7 @@ def read_decision_rules():
     Globals.Globaltotal = total
 
 
+# This function makes a list of all outputs of a DMN model
 def readoutput():
     Globals.output.clear()
 
@@ -479,6 +490,7 @@ def readoutput():
                         recursive_output_function(jsonvar["definitions"]["decision"][a]["decisionTable"]["input"]["inputExpression"]["text"])
 
 
+# this function is used by the read_output function
 def recursive_output_function(oname):
     with open(Globals.model, 'r') as myfile:
         obj = xmltodict.parse(myfile.read())

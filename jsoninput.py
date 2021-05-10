@@ -4,6 +4,7 @@ import XMLread as xr
 import Globals
 
 
+# The execute_dmn function sends the user's input to the camunda dmn executor in JSON format
 def execute_dmn():
     m = []
 
@@ -46,6 +47,7 @@ def execute_dmn():
     return a.replace("'", "").replace(",", "\n").strip('['']')
 
 
+# the deploy function deploys the DMN model of the user if the user decides to upload its own DMN model
 def deploy_dmn(name):
 
     url = "http://localhost:8080/engine-rest/deployment/create"
@@ -54,6 +56,7 @@ def deploy_dmn(name):
     requests.request("POST", url, data=payload, files=files)
 
 
+# this function sends all executed rules to the user if he wants to know why he received a certain output
 def show_executed_rules():
     Globals.lst = []
     url = "http://localhost:8080/engine-rest/history/decision-instance?includeOutputs=true&sortBy=evaluationTime&sortOrder=desc&maxResults=1000"
