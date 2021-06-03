@@ -81,7 +81,7 @@ def show_executed_rules():
         for x in range(len(Globals.Globaltotal)):
             for k in range(len(Globals.Globaltotal[x])):
                 if Globals.Globaltotal[x][k] is None:
-                    Globals.Globaltotal[x][k] = "Unspecified"
+                    Globals.Globaltotal[x][k] = "X"
                 if k%2 == 0:
                     var.append(Globals.Globaltotal[x][k])
                 else:
@@ -95,7 +95,7 @@ def show_executed_rules():
     except:  # one rule
         for k in range(len(Globals.Globaltotal)):
             if Globals.Globaltotal[k] is None:
-                Globals.Globaltotal[k] = "Unspecified"
+                Globals.Globaltotal[k] = "X"
             if k % 2 == 0:
                 var.append(Globals.Globaltotal[k])
             else:
